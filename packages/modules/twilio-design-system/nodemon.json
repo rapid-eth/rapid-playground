@@ -1,0 +1,17 @@
+{
+  "name": "@horizin/twilio-design-system",
+  "homepage": "http://horizin.io",
+  "nodemonConfig": {
+    "ignore": [
+      "dist/*"
+    ],
+    "delay": "2500"
+  },
+  "watch": [
+    "src/"
+  ],
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "js,json,jsx"
+}
