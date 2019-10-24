@@ -12,6 +12,12 @@ Object.defineProperty(exports, "EthersProvider", {
 Object.defineProperty(exports, "EthersContext", {
   enumerable: true,
   get: function get() {
+    return _Context.default;
+  }
+});
+Object.defineProperty(exports, "withContext", {
+  enumerable: true,
+  get: function get() {
     return _withContext.default;
   }
 });
@@ -29,6 +35,8 @@ Object.defineProperty(exports, "ethers", {
 });
 
 var _Provider = _interopRequireDefault(require("./Provider"));
+
+var _Context = _interopRequireDefault(require("./Context"));
 
 var _withContext = _interopRequireDefault(require("./withContext"));
 

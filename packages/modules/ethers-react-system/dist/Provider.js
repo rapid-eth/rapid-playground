@@ -13,7 +13,7 @@ var _reducer = _interopRequireDefault(require("./reducer"));
 
 var _effects = _interopRequireDefault(require("./effects"));
 
-var _utilities = require("./utilities");
+var actions = _interopRequireWildcard(require("./actions"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -43,120 +43,8 @@ var Provider = (_ref) => {
   return _react.default.createElement(_Context.default.Provider, {
     value: _objectSpread({}, state, {
       dispatch: dispatch,
-      enable: () => window.ethereum.enable(),
-      setProvider: (_ref2) => {
-        var {
-          provider
-        } = _ref2;
-        return dispatch({
-          type: 'SET_PROVIDER',
-          payload: provider
-        });
-      },
-      setProviderStatus: (_ref3) => {
-        var {
-          provider
-        } = _ref3;
-        return dispatch({
-          type: 'SET_PROVIDER_STATUS',
-          payload: provider
-        });
-      },
-
-      /* --- Library ---- */
-      loadContractIntoLibrary: (_ref4) => {
-        var {
-          abi,
-          contractName
-        } = _ref4;
-        return dispatch({
-          type: 'LOAD_CONTRACT_INTO_LIBRARY_REQUEST',
-          payload: {
-            abi,
-            contractName
-          }
-        });
-      },
-
-      /* --- Initialize ---- */
-      initContract: (_ref5) => {
-        var {
-          abi,
-          address,
-          contractType,
-          delta
-        } = _ref5;
-        return dispatch({
-          type: 'INIT_CONTRACT_REQUEST',
-          payload: {
-            abi,
-            address,
-            contractType
-          },
-          delta: delta || address
-        });
-      },
-      initContractFromLibrary: (_ref6) => {
-        var {
-          address,
-          contractName
-        } = _ref6;
-        return dispatch({
-          type: 'INIT_CONTRACT_FROM_LIBRARY_REQUEST',
-          payload: {
-            address,
-            contractName
-          }
-        });
-      },
-      deployContract: (_ref7) => {
-        var {
-          contract,
-          delta,
-          values
-        } = _ref7;
-        return dispatch({
-          type: 'DEPLOY_CONTRACT_REQUEST',
-          payload: {
-            contract,
-            values
-          },
-          delta: delta || contract && contract.contractName
-        });
-      },
-      deployContractFromBytecode: (abi, bytecode, delta) => dispatch({
-        type: 'DEPLOY_CONTRACT_FROM_BYTECODE_REQUEST',
-        input: bytecode,
-        delta: delta || (0, _utilities.hashCode)(abi)
-      }),
-      signMessageTyped: (_ref8) => {
-        var {
-          message,
-          delta
-        } = _ref8;
-        return dispatch({
-          type: 'SIGN_TYPED_MESSAGE_REQUEST',
-          payload: message,
-          id: delta || (0, _utilities.hashCode)(message.toString())
-        });
-      },
-      signMessage: (_ref9) => {
-        var {
-          message,
-          delta
-        } = _ref9;
-        return dispatch({
-          type: 'SIGN_MESSAGE_REQUEST',
-          payload: message,
-          id: delta || (0, _utilities.hashCode)(message)
-        });
-      },
-      sendTransaction: (transaction, delta) => dispatch({
-        type: 'SIGN_TRANSACTION_REQUEST',
-        input: transaction,
-        delta
-      })
-    })
+      enable: () => window.ethereum.enable()
+    }, actions)
   }, children);
 };
 
