@@ -13,7 +13,8 @@
     "predeploy": "yarn run build",
     "deploy": "gh-pages -d build",
     "preproduction": "yarn run build",
-    "production": "gh-pages -o production -d build"
+    "production": "gh-pages -o production -d build",
+    "ganache": "ganache-cli -p 8545 -q"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",
@@ -44,6 +45,7 @@
     "eslint-plugin-react-hooks": "^1.5.0",
     "file-loader": "3.0.1",
     "fs-extra": "7.0.1",
+    "ganache-cli": "^6.7.0",
     "gh-pages": "^2.0.1",
     "hash-source": "^1.0.4",
     "html-webpack-plugin": "4.0.0-beta.5",

@@ -1,42 +1,19 @@
-import {Site} from 'templates';
+import {useState} from 'react';
 import {EthersContext} from 'ethers-react-system';
-const cardData = {
-  title: 'Decentralized Application Playground',
-  tagline: 'Rapidly Experiment with Ethereum Technology'
-};
+import Storage from '../../ethereum/Storage.json';
+import TitleNumber from './TitleNumber.js';
 
 /* --- Component --- */
 const Home = props => {
+  const [loaded, setLoad] = useState(false);
   return (
     <EthersContext>
       {ethers => {
-        console.log('HOME', ethers);
-
-        return (
-          <Site
-            sx={{bg: 'smoke'}}
-            sxMain={{alignItems: 'center', justifyContent: 'center'}}
-          >
-            <Molecules.Card
-              layout="showcase"
-              variants={['large', 'centered']}
-              sx={{
-                p: 3
-              }}
-              sxTitle={{
-                fontWeight: 700
-              }}
-              sxTagline={{
-                fontWeight: 300
-              }}
-              sxMain={{
-                maxWidth: 980
-              }}
-              {...cardData}
-              image={null}
-            />
-          </Site>
-        );
+        if (loaded === false) {
+          ethers.initContract({Contract: Storage}, ethers.dispatch);
+          setLoad(true);
+        }
+        return <TitleNumber ethers={ethers}></TitleNumber>;
       }}
     </EthersContext>
   );
