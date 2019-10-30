@@ -31,16 +31,23 @@ export const loadContractIntoLibrary = ({ abi, contractName }) =>
   });
 
 /* --- Initialize ---- */
-export const initContract = ({ abi, address, contractType, delta }) =>
+export const initContract = (
+  { Contract, address, contractType, delta },
+  dispatch
+) => {
+  const networks = Object.keys(Contract.networks);
+  const latestAddress =
+    Contract.networks[networks[networks.length - 1]].address;
   dispatch({
     type: 'INIT_CONTRACT_REQUEST',
     payload: {
-      abi,
-      address,
+      abi: Contract.abi,
+      address: address || latestAddress,
       contractType
     },
     delta: delta || address
   });
+};
 
 export const initContractFromLibrary = ({ address, contractName }) =>
   dispatch({

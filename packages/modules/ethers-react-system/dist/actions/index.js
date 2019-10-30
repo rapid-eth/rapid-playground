@@ -60,18 +60,20 @@ var loadContractIntoLibrary = (_ref3) => {
 
 exports.loadContractIntoLibrary = loadContractIntoLibrary;
 
-var initContract = (_ref4) => {
+var initContract = (_ref4, dispatch) => {
   var {
-    abi,
+    Contract,
     address,
     contractType,
     delta
   } = _ref4;
-  return dispatch({
+  var networks = Object.keys(Contract.networks);
+  var latestAddress = Contract.networks[networks[networks.length - 1]].address;
+  dispatch({
     type: 'INIT_CONTRACT_REQUEST',
     payload: {
-      abi,
-      address,
+      abi: Contract.abi,
+      address: address || latestAddress,
       contractType
     },
     delta: delta || address
