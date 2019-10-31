@@ -11,7 +11,7 @@ var _utilities = require("../utilities");
  *
  * @param {Object} provider
  */
-var setProvider = (_ref) => {
+var setProvider = (_ref, dispatch) => {
   var {
     provider
   } = _ref;
@@ -28,7 +28,7 @@ var setProvider = (_ref) => {
 
 exports.setProvider = setProvider;
 
-var setProviderStatus = (_ref2) => {
+var setProviderStatus = (_ref2, dispatch) => {
   var {
     provider
   } = _ref2;
@@ -82,7 +82,7 @@ var initContract = (_ref4, dispatch) => {
 
 exports.initContract = initContract;
 
-var initContractFromLibrary = (_ref5) => {
+var initContractFromLibrary = (_ref5, dispatch) => {
   var {
     address,
     contractName
@@ -98,7 +98,7 @@ var initContractFromLibrary = (_ref5) => {
 
 exports.initContractFromLibrary = initContractFromLibrary;
 
-var deployContract = (_ref6) => {
+var deployContract = (_ref6, dispatch) => {
   var {
     contract,
     delta,
@@ -116,7 +116,7 @@ var deployContract = (_ref6) => {
 
 exports.deployContract = deployContract;
 
-var deployContractFromBytecode = (abi, bytecode, delta) => dispatch({
+var deployContractFromBytecode = (abi, bytecode, delta, dispatch) => dispatch({
   type: 'DEPLOY_CONTRACT_FROM_BYTECODE_REQUEST',
   input: bytecode,
   delta: delta || (0, _utilities.hashCode)(abi)
@@ -124,7 +124,7 @@ var deployContractFromBytecode = (abi, bytecode, delta) => dispatch({
 
 exports.deployContractFromBytecode = deployContractFromBytecode;
 
-var signMessageTyped = (_ref7) => {
+var signMessageTyped = (_ref7, dispatch) => {
   var {
     message,
     delta
@@ -152,7 +152,7 @@ var signMessage = (_ref8) => {
 
 exports.signMessage = signMessage;
 
-var sendTransaction = (transaction, delta) => dispatch({
+var sendTransaction = (transaction, delta, dispatch) => dispatch({
   type: 'SIGN_TRANSACTION_REQUEST',
   input: transaction,
   delta

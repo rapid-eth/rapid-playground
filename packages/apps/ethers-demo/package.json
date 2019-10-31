@@ -14,7 +14,8 @@
     "deploy": "gh-pages -d build",
     "preproduction": "yarn run build",
     "production": "gh-pages -o production -d build",
-    "ganache": "ganache-cli -p 8545 -q"
+    "ganache": "ganache-cli -p 8545 -q",
+    "migrate": "truffle migrate --reset --network development && cp -r build/contracts src/ethereum"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",

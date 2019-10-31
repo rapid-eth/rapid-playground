@@ -199,54 +199,46 @@ var effects = (callUseEffect, state, dispatch) => {
 
   callUseEffect(() => {
     if (state.store.contracts && state.store.contracts.length > 0) {
-      var runEffect =
-      /*#__PURE__*/
-      function () {
-        var _ref4 = _asyncToGenerator(function* () {
-          var contract;
-          var request = state.store.contracts[0];
-          console.log(request, 'contract request');
-          var {
-            payload
-          } = request;
+      var runEffect = () => {
+        var contract;
+        var request = state.store.contracts[0];
+        console.log(request, 'contract request');
+        var {
+          payload
+        } = request;
 
-          try {
-            var wallet = state.wallet;
+        try {
+          var wallet = state.wallet;
 
-            if (wallet) {
-              contract = new _ethers.ethers.Contract(payload.address, payload.abi, wallet);
-              console.log(request, contract, 'contract loaded');
-              dispatch({
-                type: 'INIT_CONTRACT_SUCCESS',
-                id: request.id,
-                delta: request.id,
-                payload: contract,
-                contractType: payload.contractType
-              });
-            }
-          } catch (error) {
-            console.log(error);
+          if (wallet) {
+            contract = new _ethers.ethers.Contract(payload.address, payload.abi, wallet);
+            console.log(request, contract, 'contract loaded');
             dispatch({
-              type: 'INIT_CONTRACT_FAILURE',
+              type: 'INIT_CONTRACT_SUCCESS',
               id: request.id,
               delta: request.id,
-              payload: error
+              payload: contract,
+              contractType: payload.contractType
             });
           }
-        });
-
-        return function runEffect() {
-          return _ref4.apply(this, arguments);
-        };
-      }();
+        } catch (error) {
+          console.log(error);
+          dispatch({
+            type: 'INIT_CONTRACT_FAILURE',
+            id: request.id,
+            delta: request.id,
+            payload: error
+          });
+        }
+      };
 
       runEffect();
     }
   }, [state.wallet, state.store.contracts]);
   /**
-     * @function LoadContract
-     * @description LOAD_CONTRACT_INTO_LIBRARY_REQUEST
-     */
+   * @function LoadContract
+   * @description LOAD_CONTRACT_INTO_LIBRARY_REQUEST
+   */
 
   callUseEffect(() => {
     if (state.store.library && state.store.library.length > 0) {
@@ -270,10 +262,10 @@ var effects = (callUseEffect, state, dispatch) => {
 };
 
 var _default = effects;
-/** 
+/**
  * @func networkRouting
  * @desc Select network provider.
- * @param {Object} network 
+ * @param {Object} network
  * @return {Object} provider
  */
 
@@ -282,7 +274,7 @@ exports.default = _default;
 var networkRouting =
 /*#__PURE__*/
 function () {
-  var _ref5 = _asyncToGenerator(function* (network) {
+  var _ref4 = _asyncToGenerator(function* (network) {
     switch (network) {
       case 'json':
         return window.ethers.providers.json;
@@ -302,7 +294,7 @@ function () {
   });
 
   return function networkRouting(_x) {
-    return _ref5.apply(this, arguments);
+    return _ref4.apply(this, arguments);
   };
 }();
 

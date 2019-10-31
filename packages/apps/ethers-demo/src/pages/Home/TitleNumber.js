@@ -1,12 +1,12 @@
 import {useState, useEffect} from 'react';
 import {Site} from 'templates';
+
 const cardData = {
 	title: 'Decentralized Application Playground',
 	tagline: 'Rapidly Experiment with Ethereum Technology'
 };
 const useNumber = Storage => {
 	const [num, setNumber] = useState(0);
-
 	useEffect(() => {
 		async function handleNumber() {
 			const number = await Storage.getNumber();
@@ -19,10 +19,8 @@ const useNumber = Storage => {
 	}, [Storage]);
 	return num;
 };
-
 const TitleNumber = ({ethers}) => {
 	const number = useNumber(ethers.contracts[0]);
-	console.log(number);
 	return (
 		<Site
 			sx={{bg: 'smoke'}}
@@ -48,7 +46,7 @@ const TitleNumber = ({ethers}) => {
 			/>
 			<>
 				<h1>The current number is {number}</h1>
-				<button onClick={() => console.log('HI')}>
+				<button onClick={() => ethers.contracts[0].setNumber(10)}>
 					Set the number to 10
 				</button>
 			</>
