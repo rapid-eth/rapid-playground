@@ -8,13 +8,12 @@ const Provider = ({ children, ...props }) => {
   const initialState = useContext(Context);
   const [state, dispatch] = useReducer(reducers, initialState);
   ProviderEffects(useEffect, state, dispatch);
-
   return (
     <Context.Provider
       value={{
         ...state,
-        dispatch: dispatch,
-        enable: () => window.ethereum.enable(),
+        dispatch,
+        enable: window.ethereum.enable,
         ...actions
       }}
     >

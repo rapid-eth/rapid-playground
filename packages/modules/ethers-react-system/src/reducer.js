@@ -137,25 +137,9 @@ const reducerActions = (state, action) => {
     /* ----------------------- */
     /* Contract Initialize     */
     /* ----------------------- */
-    case INIT_CONTRACT_REQUEST:
-      console.log(action, 'init contract');
-      return {
-        ...state,
-        store: {
-          ...state.store,
-          contracts: [
-            ...state.store.contracts,
-            {
-              payload,
-              type,
-              id: delta || hashCode(payload),
-              delta: delta || hashCode(payload)
-            }
-          ]
-        }
-      };
 
-    case 'INIT_CONTRACT_SUCCESS':
+    case INIT_CONTRACT_REQUEST:
+      const { address, contract } = payload;
       return {
         ...state,
         store: {
@@ -166,18 +150,9 @@ const reducerActions = (state, action) => {
           ...state.contracts,
           [id]: {
             id,
-            contractType: action.contractType,
-            ...payload
+            address,
+            ...contract
           }
-        }
-      };
-
-    case 'INIT_CONTRACT_FAILURE':
-      return {
-        ...state,
-        store: {
-          ...state.store,
-          contracts: []
         }
       };
 
