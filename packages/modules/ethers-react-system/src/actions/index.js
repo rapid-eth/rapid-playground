@@ -1,6 +1,6 @@
 import { hashCode, getLatestDeploymentAddress } from '../utilities';
 import { ethers } from 'ethers';
-import { INIT_CONTRACT_REQUEST } from '../../dist/actions/types';
+import { INIT_CONTRACT_REQUEST } from './types';
 /**
  *
  * @param {Object} provider
