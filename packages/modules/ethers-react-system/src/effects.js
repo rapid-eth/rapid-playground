@@ -6,7 +6,7 @@ const effects = (callUseEffect, state, dispatch) => {
    * @function EthereumEnable
    */
   callUseEffect(() => {
-    // window.ethereum.enable()
+    window.ethereum.enable();
   }, [state.enable]);
 
   /**
