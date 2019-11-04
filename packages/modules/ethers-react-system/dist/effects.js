@@ -17,7 +17,8 @@ var effects = (callUseEffect, state, dispatch) => {
   /**
    * @function EthereumEnable
    */
-  callUseEffect(() => {// window.ethereum.enable()
+  callUseEffect(() => {
+    window.ethereum.enable();
   }, [state.enable]);
   /**
    * @function ProviderMonitor
@@ -192,49 +193,6 @@ var effects = (callUseEffect, state, dispatch) => {
       runEffect();
     }
   }, [state.store.deploy]);
-  /**
-   * @function InitializeContract
-   * @description INIT_CONTRACT_REQUEST
-   */
-
-  callUseEffect(() => {
-    if (state.store.contracts && state.store.contracts.length > 0) {
-      var runEffect = () => {
-        var contract;
-        var request = state.store.contracts[0];
-        console.log(request, 'contract request');
-        var {
-          payload
-        } = request;
-
-        try {
-          var wallet = state.wallet;
-
-          if (wallet) {
-            contract = new _ethers.ethers.Contract(payload.address, payload.abi, wallet);
-            console.log(request, contract, 'contract loaded');
-            dispatch({
-              type: 'INIT_CONTRACT_SUCCESS',
-              id: request.id,
-              delta: request.id,
-              payload: contract,
-              contractType: payload.contractType
-            });
-          }
-        } catch (error) {
-          console.log(error);
-          dispatch({
-            type: 'INIT_CONTRACT_FAILURE',
-            id: request.id,
-            delta: request.id,
-            payload: error
-          });
-        }
-      };
-
-      runEffect();
-    }
-  }, [state.wallet, state.store.contracts]);
   /**
    * @function LoadContract
    * @description LOAD_CONTRACT_INTO_LIBRARY_REQUEST

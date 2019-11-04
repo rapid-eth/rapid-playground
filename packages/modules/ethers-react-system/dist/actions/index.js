@@ -7,11 +7,15 @@ exports.sendTransaction = exports.signMessage = exports.signMessageTyped = expor
 
 var _utilities = require("../utilities");
 
+var _ethers = require("ethers");
+
+var _types = require("../../dist/actions/types");
+
 /**
  *
  * @param {Object} provider
  */
-var setProvider = (_ref, dispatch) => {
+var setProvider = (state, dispatch) => (_ref) => {
   var {
     provider
   } = _ref;
@@ -28,7 +32,7 @@ var setProvider = (_ref, dispatch) => {
 
 exports.setProvider = setProvider;
 
-var setProviderStatus = (_ref2, dispatch) => {
+var setProviderStatus = (state, dispatch) => (_ref2) => {
   var {
     provider
   } = _ref2;
@@ -42,7 +46,7 @@ var setProviderStatus = (_ref2, dispatch) => {
 
 exports.setProviderStatus = setProviderStatus;
 
-var loadContractIntoLibrary = (_ref3) => {
+var loadContractIntoLibrary = (state, dispatch) => (_ref3) => {
   var {
     abi,
     contractName
@@ -55,38 +59,55 @@ var loadContractIntoLibrary = (_ref3) => {
     }
   });
 };
-/* --- Initialize ---- */
+/**
+ * @summary This function will take the built smart contracts(and a optional deployed address param)
+ * and initialize the smart contract with the deployed version. By default it will pull the latest deployed address from the JSON file.
+ * @name initContract
+ * @param {Object} actionProps
+ * @param {Function} dispatch - the reducer dispatch function which send the payload, type and id
+ * to the associated reducer.
+ * @param {Object} wallet The wallet of the current application user.
+ * As provided by metamask, dapp browser or whichever other provider is triggered by ethereum.enable()
+ * ! @NOTE The Contract parameter is assumed to follow the general structure resulting from compiling via the truffle (ie it has the abi, networks used, etc)
+ * TODO @todo add extensive error checking
+ */
 
 
 exports.loadContractIntoLibrary = loadContractIntoLibrary;
 
-var initContract = (_ref4, dispatch) => {
+var initContract = (state, dispatch) => (Contract, address) => {
   var {
-    Contract,
-    address,
-    contractType,
-    delta
-  } = _ref4;
-  var networks = Object.keys(Contract.networks);
-  var latestAddress = Contract.networks[networks[networks.length - 1]].address;
-  dispatch({
-    type: 'INIT_CONTRACT_REQUEST',
-    payload: {
-      abi: Contract.abi,
-      address: address || latestAddress,
-      contractType
-    },
-    delta: delta || address
-  });
+    wallet
+  } = state;
+
+  if (wallet === undefined || Contract === NoUndefinedVariables) {
+    return;
+  }
+
+  try {
+    var latestAddress = (0, _utilities.getLatestDeploymentAddress)(Contract);
+    var contract = new _ethers.ethers.Contract(latestAddress, Contract.abi, wallet);
+    dispatch({
+      type: _types.INIT_CONTRACT_REQUEST,
+      id: (0, _utilities.hashCode)(Contract),
+      payload: {
+        contract,
+        address: address || latestAddress
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return;
+  }
 };
 
 exports.initContract = initContract;
 
-var initContractFromLibrary = (_ref5, dispatch) => {
+var initContractFromLibrary = (state, dispatch) => (_ref4, dispatch) => {
   var {
     address,
     contractName
-  } = _ref5;
+  } = _ref4;
   return dispatch({
     type: 'INIT_CONTRACT_FROM_LIBRARY_REQUEST',
     payload: {
@@ -98,12 +119,12 @@ var initContractFromLibrary = (_ref5, dispatch) => {
 
 exports.initContractFromLibrary = initContractFromLibrary;
 
-var deployContract = (_ref6, dispatch) => {
+var deployContract = (state, dispatch) => (_ref5, dispatch) => {
   var {
     contract,
     delta,
     values
-  } = _ref6;
+  } = _ref5;
   return dispatch({
     type: 'DEPLOY_CONTRACT_REQUEST',
     payload: {
@@ -116,7 +137,7 @@ var deployContract = (_ref6, dispatch) => {
 
 exports.deployContract = deployContract;
 
-var deployContractFromBytecode = (abi, bytecode, delta, dispatch) => dispatch({
+var deployContractFromBytecode = (state, dispatch) => (abi, bytecode, delta, dispatch) => dispatch({
   type: 'DEPLOY_CONTRACT_FROM_BYTECODE_REQUEST',
   input: bytecode,
   delta: delta || (0, _utilities.hashCode)(abi)
@@ -124,11 +145,11 @@ var deployContractFromBytecode = (abi, bytecode, delta, dispatch) => dispatch({
 
 exports.deployContractFromBytecode = deployContractFromBytecode;
 
-var signMessageTyped = (_ref7, dispatch) => {
+var signMessageTyped = (state, dispatch) => (_ref6, dispatch) => {
   var {
     message,
     delta
-  } = _ref7;
+  } = _ref6;
   return dispatch({
     type: 'SIGN_TYPED_MESSAGE_REQUEST',
     payload: message,
@@ -138,11 +159,11 @@ var signMessageTyped = (_ref7, dispatch) => {
 
 exports.signMessageTyped = signMessageTyped;
 
-var signMessage = (_ref8) => {
+var signMessage = (state, dispatch) => (_ref7) => {
   var {
     message,
     delta
-  } = _ref8;
+  } = _ref7;
   return dispatch({
     type: 'SIGN_MESSAGE_REQUEST',
     payload: message,
@@ -152,7 +173,7 @@ var signMessage = (_ref8) => {
 
 exports.signMessage = signMessage;
 
-var sendTransaction = (transaction, delta, dispatch) => dispatch({
+var sendTransaction = (state, dispatch) => (transaction, delta, dispatch) => dispatch({
   type: 'SIGN_TRANSACTION_REQUEST',
   input: transaction,
   delta

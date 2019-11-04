@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.shortenAddress = shortenAddress;
-exports.default = exports.createStringhash = exports.isAddress = exports.trimBalance = exports.hashCode = void 0;
+exports.default = exports.getLatestDeploymentAddress = exports.createStringhash = exports.isAddress = exports.trimBalance = exports.hashCode = void 0;
 
 var _ethers = require("ethers");
 
@@ -50,7 +50,7 @@ var trimBalance = balance => {
  * @method isAddress
  * @param {String} address the given HEX adress
  * @return {Boolean} sinof
-*/
+ */
 
 
 exports.trimBalance = trimBalance;
@@ -75,7 +75,7 @@ var isAddress = address => {
  * @method isChecksumAddress
  * @param {String} address the given HEX adress
  * @return {Boolean}
-*/
+ */
 
 
 exports.isAddress = isAddress;
@@ -98,22 +98,35 @@ var isChecksumAddress = function isChecksumAddress(address) {
 /**
  * @func createStringhash
  * @desc Pass string into ethers keccak256 hashing function.
- * @param {String} msg 
+ * @param {String} msg
  */
 
 
-var createStringhash = msg => _ethers.utils.solidityKeccak256(["string"], [msg]);
+var createStringhash = msg => _ethers.utils.solidityKeccak256(['string'], [msg]);
 
 exports.createStringhash = createStringhash;
 
 var createStringMessageSignature = msg => {
-  var messageHash = _ethers.utils.solidityKeccak256(["string"], [msg]);
+  var messageHash = _ethers.utils.solidityKeccak256(['string'], [msg]);
 
   var messageHashBytes = _ethers.utils.arrayify(messageHash);
 
   return messageHashBytes;
 };
+/**
+ *
+ * @param {Object} Contract The build results of migrations and compiliation. Includes abi, networks, bytecode, etc
+ * @returns {String} returns the ethereum address that is associated with the latest deployment of the smart contract
+ */
 
+
+var getLatestDeploymentAddress = Contract => {
+  var networks = Object.keys(Contract.networks);
+  var latestAddress = Contract.networks[networks[networks.length - 1]].address;
+  return latestAddress;
+};
+
+exports.getLatestDeploymentAddress = getLatestDeploymentAddress;
 var _default = {
   createStringhash,
   createStringMessageSignature,

@@ -1,24 +1,12 @@
-import {useState, useEffect} from 'react';
+import React from 'react';
 import {Site} from 'templates';
 
+import {useNumber} from './utils/storageNumber';
 const cardData = {
 	title: 'Decentralized Application Playground',
 	tagline: 'Rapidly Experiment with Ethereum Technology'
 };
-const useNumber = Storage => {
-	const [num, setNumber] = useState(0);
-	useEffect(() => {
-		async function handleNumber() {
-			const number = await Storage.getNumber();
-			setNumber(number.toNumber());
-		}
 
-		if (Storage !== undefined) {
-			handleNumber();
-		}
-	}, [Storage]);
-	return num;
-};
 const TitleNumber = ({ethers}) => {
 	const number = useNumber(ethers.contracts[0]);
 	return (

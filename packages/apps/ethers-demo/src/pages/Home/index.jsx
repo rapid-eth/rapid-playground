@@ -1,24 +1,22 @@
 import {useState} from 'react';
-import {EthersContext} from 'ethers-react-system';
+import {EthersContext, withContext} from 'ethers-react-system';
 import Storage from '../../ethereum/contracts/Storage.json';
 import TitleNumber from './TitleNumber.js';
 
 /* --- Component --- */
-const Home = () => {
+/**
+ * @todo Make the initialization of the address and wallet be syncronous if the ethereum has already been enabled.
+ */
+
+const Home = props => {
+  const {ethers} = props;
+  console.log(ethers);
   const [loaded, setLoad] = useState(false);
-  return (
-    <EthersContext.Consumer>
-      {ethers => {
-        console.log('Ethers: ', ethers);
-        const {dispatch, wallet} = ethers;
-        if (loaded === false && wallet !== undefined) {
-          ethers.initContract({Contract: Storage}, dispatch, wallet);
-          setLoad(true);
-        }
-        return <TitleNumber ethers={ethers}></TitleNumber>;
-      }}
-    </EthersContext.Consumer>
-  );
+  if (loaded === false && ethers.wallet !== undefined) {
+    ethers.initContract(Storage);
+    setLoad(true);
+  }
+  return <TitleNumber ethers={ethers}></TitleNumber>;
 };
 
-export default Home;
+export default withContext(Home);

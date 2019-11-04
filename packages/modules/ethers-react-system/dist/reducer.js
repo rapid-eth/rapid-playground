@@ -132,19 +132,10 @@ var reducerActions = (state, action) => {
     /* ----------------------- */
 
     case _types.INIT_CONTRACT_REQUEST:
-      console.log(action, 'init contract');
-      return _objectSpread({}, state, {
-        store: _objectSpread({}, state.store, {
-          contracts: [...state.store.contracts, {
-            payload,
-            type,
-            id: delta || (0, _utilities.hashCode)(payload),
-            delta: delta || (0, _utilities.hashCode)(payload)
-          }]
-        })
-      });
-
-    case 'INIT_CONTRACT_SUCCESS':
+      var {
+        address,
+        contract
+      } = payload;
       return _objectSpread({}, state, {
         store: _objectSpread({}, state.store, {
           contracts: []
@@ -152,15 +143,8 @@ var reducerActions = (state, action) => {
         contracts: _objectSpread({}, state.contracts, {
           [id]: _objectSpread({
             id,
-            contractType: action.contractType
-          }, payload)
-        })
-      });
-
-    case 'INIT_CONTRACT_FAILURE':
-      return _objectSpread({}, state, {
-        store: _objectSpread({}, state.store, {
-          contracts: []
+            address
+          }, contract)
         })
       });
 

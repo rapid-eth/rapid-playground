@@ -46,21 +46,26 @@ export const loadContractIntoLibrary = (state, dispatch) => ({
  * ! @NOTE The Contract parameter is assumed to follow the general structure resulting from compiling via the truffle (ie it has the abi, networks used, etc)
  * TODO @todo add extensive error checking
  */
-export const initContract = (state, dispatch) => ({ Contract, address }) => {
+export const initContract = (state, dispatch) => (Contract, address) => {
   const { wallet } = state;
-  if (wallet === undefined) {
+  if (wallet === undefined || Contract === NoUndefinedVariables) {
     return;
   }
-  const latestAddress = getLatestDeploymentAddress(Contract);
-  const contract = new ethers.Contract(latestAddress, Contract.abi, wallet);
-  dispatch({
-    type: INIT_CONTRACT_REQUEST,
-    id: hashCode(Contract),
-    payload: {
-      contract,
-      address: address || latestAddress
-    }
-  });
+  try {
+    const latestAddress = getLatestDeploymentAddress(Contract);
+    const contract = new ethers.Contract(latestAddress, Contract.abi, wallet);
+    dispatch({
+      type: INIT_CONTRACT_REQUEST,
+      id: hashCode(Contract),
+      payload: {
+        contract,
+        address: address || latestAddress
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return;
+  }
 };
 
 export const initContractFromLibrary = (state, dispatch) => (

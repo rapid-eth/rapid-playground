@@ -13,7 +13,7 @@ var _reducer = _interopRequireDefault(require("./reducer"));
 
 var _effects = _interopRequireDefault(require("./effects"));
 
-var actions = _interopRequireWildcard(require("./actions"));
+var _actions = require("./middleware/actions");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31,6 +31,10 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
+/**
+ * @todo add reducer middleware
+ * @todo add initialization function
+ */
 var Provider = (_ref) => {
   var {
     children
@@ -39,11 +43,12 @@ var Provider = (_ref) => {
 
   var initialState = (0, _react.useContext)(_Context.default);
   var [state, dispatch] = (0, _react.useReducer)(_reducer.default, initialState);
+  var actions = (0, _actions.enhanceActions)(state, dispatch);
   (0, _effects.default)(_react.useEffect, state, dispatch);
   return _react.default.createElement(_Context.default.Provider, {
     value: _objectSpread({}, state, {
-      dispatch: dispatch,
-      enable: () => window.ethereum.enable()
+      dispatch,
+      enable: window.ethereum.enable
     }, actions)
   }, children);
 };
