@@ -6,7 +6,6 @@ import { enhanceActions } from './middleware/actions';
 import { initialize } from './middleware/initialize';
 /**
  * @todo add reducer middleware
- * @todo add initialization function
  * @todo Add hooks to query smart contracts
  */
 const Provider = ({ children, contracts, ...props }) => {
