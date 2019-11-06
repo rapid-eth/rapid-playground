@@ -8,7 +8,7 @@ const cardData = {
 };
 
 const TitleNumber = ({ethers}) => {
-	const number = useNumber(ethers.contracts[0]);
+	const number = useNumber(ethers.contracts['Storage']);
 	return (
 		<Site
 			sx={{bg: 'smoke'}}

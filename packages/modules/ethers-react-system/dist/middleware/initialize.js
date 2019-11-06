@@ -20,7 +20,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /**
  * @summary The function is called by the 'useReducer' functionality, it will process the given smart contracts
  *  and then add them to the initial state of the provider.
- * @param {Array<ContractABI>} contracts an array of the contract ABIs to be initialized
+ * @param {Array} contracts an array of the contract ABIs to be initialized
  * @returns the initial state including with the initialized contracts
  */
 var initialize = contracts => initialState => {
@@ -28,7 +28,7 @@ var initialize = contracts => initialState => {
   contracts.forEach(contract => {
     var [deployedContract, address] = getContract(contract);
     var id = (0, _utilities.hashCode)(deployedContract);
-    deployed[id] = _objectSpread({
+    deployed[contract.contractName] = _objectSpread({
       id,
       address
     }, deployedContract);

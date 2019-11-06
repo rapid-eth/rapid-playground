@@ -5,7 +5,7 @@ import { networkRouting } from '../effects';
 /**
  * @summary The function is called by the 'useReducer' functionality, it will process the given smart contracts
  *  and then add them to the initial state of the provider.
- * @param {Array<ContractABI>} contracts an array of the contract ABIs to be initialized
+ * @param {Array} contracts an array of the contract ABIs to be initialized
  * @returns the initial state including with the initialized contracts
  */
 export const initialize = contracts => initialState => {
@@ -13,7 +13,7 @@ export const initialize = contracts => initialState => {
   contracts.forEach(contract => {
     const [deployedContract, address] = getContract(contract);
     const id = hashCode(deployedContract);
-    deployed[id] = {
+    deployed[contract.contractName] = {
       id,
       address,
       ...deployedContract
