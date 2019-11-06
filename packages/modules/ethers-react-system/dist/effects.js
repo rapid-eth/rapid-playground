@@ -229,31 +229,23 @@ var _default = effects;
 
 exports.default = _default;
 
-var networkRouting =
-/*#__PURE__*/
-function () {
-  var _ref4 = _asyncToGenerator(function* (network) {
-    switch (network) {
-      case 'json':
-        return window.ethers.providers.json;
+var networkRouting = network => {
+  switch (network) {
+    case 'json':
+      return window.ethers.providers.json;
 
-      case 'test':
-        return window.ethers.providers.test;
+    case 'test':
+      return window.ethers.providers.test;
 
-      case 'infura':
-        return window.ethers.providers.infura;
+    case 'infura':
+      return window.ethers.providers.infura;
 
-      case 'metamask':
-        return new _ethers.ethers.providers.Web3Provider(window.web3.currentProvider);
+    case 'metamask':
+      return new _ethers.ethers.providers.Web3Provider(window.web3.currentProvider);
 
-      default:
-        return _ethers.ethers.getDefaultProvider('rinkeby');
-    }
-  });
-
-  return function networkRouting(_x) {
-    return _ref4.apply(this, arguments);
-  };
-}();
+    default:
+      return _ethers.ethers.getDefaultProvider('rinkeby');
+  }
+};
 
 exports.networkRouting = networkRouting;

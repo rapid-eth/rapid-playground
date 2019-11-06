@@ -17,10 +17,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
 /**
  * @summary The function is called by the 'useReducer' functionality, it will process the given smart contracts
  *  and then add them to the initial state of the provider.
@@ -28,26 +24,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
  * @returns the initial state including with the initialized contracts
  */
 var initialize = contracts => initialState => {
-  contracts.map(
-  /*#__PURE__*/
-  function () {
-    var _ref = _asyncToGenerator(function* (contract) {
-      var provider = yield (0, _effects.networkRouting)('metamask');
-      var wallet = provider.getSigner();
-      var address = (0, _utilities.getLatestDeploymentAddress)(contract);
-      var deployedContract = new _ethers.ethers.Contract(address, contract.abi, wallet);
-      var id = (0, _utilities.hashCode)(deployedContract);
-      initialState.contracts[id] = _objectSpread({
-        id,
-        address
-      }, deployedContract);
-    });
-
-    return function (_x) {
-      return _ref.apply(this, arguments);
-    };
-  }());
-  return initialState;
+  var deployed = {};
+  contracts.forEach(contract => {
+    var [deployedContract, address] = getContract(contract);
+    var id = (0, _utilities.hashCode)(deployedContract);
+    deployed[id] = _objectSpread({
+      id,
+      address
+    }, deployedContract);
+  });
+  return _objectSpread({}, initialState, {
+    contracts: _objectSpread({}, deployed)
+  });
 };
 
 exports.initialize = initialize;
+
+var getContract = contract => {
+  var provider = (0, _effects.networkRouting)('metamask');
+  var wallet = provider.getSigner();
+  var address = (0, _utilities.getLatestDeploymentAddress)(contract);
+  var deployedContract = new _ethers.ethers.Contract(address, contract.abi, wallet);
+  return [deployedContract, address];
+};

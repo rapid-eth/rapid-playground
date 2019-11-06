@@ -9,18 +9,28 @@ import { networkRouting } from '../effects';
  * @returns the initial state including with the initialized contracts
  */
 export const initialize = contracts => initialState => {
-  contracts.map(async contract => {
-    const provider = await networkRouting('metamask');
-    const wallet = provider.getSigner();
-    const address = getLatestDeploymentAddress(contract);
-    const deployedContract = new ethers.Contract(address, contract.abi, wallet);
+  const deployed = {};
+  contracts.forEach(contract => {
+    const [deployedContract, address] = getContract(contract);
     const id = hashCode(deployedContract);
-    initialState.contracts[id] = {
+    deployed[id] = {
       id,
       address,
       ...deployedContract
     };
   });
+  return {
+    ...initialState,
+    contracts: {
+      ...deployed
+    }
+  };
+};
 
-  return initialState;
+const getContract = contract => {
+  const provider = networkRouting('metamask');
+  const wallet = provider.getSigner();
+  const address = getLatestDeploymentAddress(contract);
+  const deployedContract = new ethers.Contract(address, contract.abi, wallet);
+  return [deployedContract, address];
 };

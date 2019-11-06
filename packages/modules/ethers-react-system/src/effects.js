@@ -193,7 +193,7 @@ export default effects;
  * @param {Object} network
  * @return {Object} provider
  */
-export const networkRouting = async network => {
+export const networkRouting = network => {
   switch (network) {
     case 'json':
       return window.ethers.providers.json;
