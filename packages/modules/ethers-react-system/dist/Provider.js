@@ -15,6 +15,8 @@ var _effects = _interopRequireDefault(require("./effects"));
 
 var _actions = require("./middleware/actions");
 
+var _initialize = require("./middleware/initialize");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -34,15 +36,17 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 /**
  * @todo add reducer middleware
  * @todo add initialization function
+ * @todo Add hooks to query smart contracts
  */
 var Provider = (_ref) => {
   var {
-    children
+    children,
+    contracts
   } = _ref,
-      props = _objectWithoutProperties(_ref, ["children"]);
+      props = _objectWithoutProperties(_ref, ["children", "contracts"]);
 
   var initialState = (0, _react.useContext)(_Context.default);
-  var [state, dispatch] = (0, _react.useReducer)(_reducer.default, initialState);
+  var [state, dispatch] = (0, _react.useReducer)(_reducer.default, initialState, (0, _initialize.initialize)(contracts));
   var actions = (0, _actions.enhanceActions)(state, dispatch);
   (0, _effects.default)(_react.useEffect, state, dispatch);
   return _react.default.createElement(_Context.default.Provider, {

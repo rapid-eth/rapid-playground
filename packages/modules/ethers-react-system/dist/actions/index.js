@@ -9,7 +9,7 @@ var _utilities = require("../utilities");
 
 var _ethers = require("ethers");
 
-var _types = require("../../dist/actions/types");
+var _types = require("./types");
 
 /**
  *
@@ -61,14 +61,15 @@ var loadContractIntoLibrary = (state, dispatch) => (_ref3) => {
 };
 /**
  * @summary This function will take the built smart contracts(and a optional deployed address param)
- * and initialize the smart contract with the deployed version. By default it will pull the latest deployed address from the JSON file.
- * @name initContract
- * @param {Object} actionProps
- * @param {Function} dispatch - the reducer dispatch function which send the payload, type and id
- * to the associated reducer.
- * @param {Object} wallet The wallet of the current application user.
- * As provided by metamask, dapp browser or whichever other provider is triggered by ethereum.enable()
- * ! @NOTE The Contract parameter is assumed to follow the general structure resulting from compiling via the truffle (ie it has the abi, networks used, etc)
+ * and initialize the smart contract with the deployed version.
+ * By default it will pull the latest deployed address from the JSON file.
+ *
+ * @param {Object} Contract The smart contract build object. Assumed to follow the general structure resulting
+ * from compiling via the truffle(ie it has the abi, networks used, etc)
+ *
+ * @param {String} address optional parameter that specifies the deployment address to initialize the contract with.
+ * In the event you need to initialize with a contract that is not the latest deployed.
+ *
  * TODO @todo add extensive error checking
  */
 
@@ -80,7 +81,7 @@ var initContract = (state, dispatch) => (Contract, address) => {
     wallet
   } = state;
 
-  if (wallet === undefined || Contract === NoUndefinedVariables) {
+  if (wallet === undefined || Contract === undefined) {
     return;
   }
 
@@ -103,7 +104,7 @@ var initContract = (state, dispatch) => (Contract, address) => {
 
 exports.initContract = initContract;
 
-var initContractFromLibrary = (state, dispatch) => (_ref4, dispatch) => {
+var initContractFromLibrary = (state, dispatch) => (_ref4) => {
   var {
     address,
     contractName
@@ -119,7 +120,7 @@ var initContractFromLibrary = (state, dispatch) => (_ref4, dispatch) => {
 
 exports.initContractFromLibrary = initContractFromLibrary;
 
-var deployContract = (state, dispatch) => (_ref5, dispatch) => {
+var deployContract = (state, dispatch) => (_ref5) => {
   var {
     contract,
     delta,
@@ -137,7 +138,7 @@ var deployContract = (state, dispatch) => (_ref5, dispatch) => {
 
 exports.deployContract = deployContract;
 
-var deployContractFromBytecode = (state, dispatch) => (abi, bytecode, delta, dispatch) => dispatch({
+var deployContractFromBytecode = (state, dispatch) => (abi, bytecode, delta) => dispatch({
   type: 'DEPLOY_CONTRACT_FROM_BYTECODE_REQUEST',
   input: bytecode,
   delta: delta || (0, _utilities.hashCode)(abi)
@@ -145,7 +146,7 @@ var deployContractFromBytecode = (state, dispatch) => (abi, bytecode, delta, dis
 
 exports.deployContractFromBytecode = deployContractFromBytecode;
 
-var signMessageTyped = (state, dispatch) => (_ref6, dispatch) => {
+var signMessageTyped = (state, dispatch) => (_ref6) => {
   var {
     message,
     delta
@@ -173,7 +174,7 @@ var signMessage = (state, dispatch) => (_ref7) => {
 
 exports.signMessage = signMessage;
 
-var sendTransaction = (state, dispatch) => (transaction, delta, dispatch) => dispatch({
+var sendTransaction = (state, dispatch) => (transaction, delta) => dispatch({
   type: 'SIGN_TRANSACTION_REQUEST',
   input: transaction,
   delta

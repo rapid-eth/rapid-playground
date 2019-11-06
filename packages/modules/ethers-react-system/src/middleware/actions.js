@@ -3,8 +3,8 @@ const keys = Object.keys(actions);
 
 /**
  * @summary Insert documentation for enhanceActions middleware
- * @param {Object} state
- * @param {Function} dispatch
+ * @param {Object} state the state object
+ * @param {React.Dispatch} dispatch
  */
 export const enhanceActions = (state, dispatch) => {
   let enhanced = {};

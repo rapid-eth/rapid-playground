@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {EthersContext, withContext} from 'ethers-react-system';
+import {withContext} from 'ethers-react-system';
 import Storage from '../../ethereum/contracts/Storage.json';
 import TitleNumber from './TitleNumber.js';
 
@@ -10,12 +10,7 @@ import TitleNumber from './TitleNumber.js';
 
 const Home = props => {
   const {ethers} = props;
-  console.log(ethers);
-  const [loaded, setLoad] = useState(false);
-  if (loaded === false && ethers.wallet !== undefined) {
-    ethers.initContract(Storage);
-    setLoad(true);
-  }
+  console.log('Ethers: ', ethers);
   return <TitleNumber ethers={ethers}></TitleNumber>;
 };
 

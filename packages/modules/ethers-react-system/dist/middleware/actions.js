@@ -14,8 +14,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var keys = Object.keys(actions);
 /**
  * @summary Insert documentation for enhanceActions middleware
- * @param {Object} state
- * @param {Function} dispatch
+ * @param {Object} state the state object
+ * @param {React.Dispatch} dispatch
  */
 
 var enhanceActions = (state, dispatch) => {

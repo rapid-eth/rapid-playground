@@ -1,4 +1,5 @@
-import { utils } from 'ethers';
+import ethers, { utils } from 'ethers';
+
 export const hashCode = function(input) {
   var hash = 0;
   if (input.length == 0) {

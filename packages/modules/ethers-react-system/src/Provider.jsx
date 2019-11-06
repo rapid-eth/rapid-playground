@@ -3,14 +3,19 @@ import Context from './Context';
 import reducers from './reducer';
 import ProviderEffects from './effects';
 import { enhanceActions } from './middleware/actions';
-
+import { initialize } from './middleware/initialize';
 /**
  * @todo add reducer middleware
  * @todo add initialization function
+ * @todo Add hooks to query smart contracts
  */
-const Provider = ({ children, ...props }) => {
+const Provider = ({ children, contracts, ...props }) => {
   const initialState = useContext(Context);
-  const [state, dispatch] = useReducer(reducers, initialState);
+  const [state, dispatch] = useReducer(
+    reducers,
+    initialState,
+    initialize(contracts)
+  );
   const actions = enhanceActions(state, dispatch);
   ProviderEffects(useEffect, state, dispatch);
   return (

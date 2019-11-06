@@ -36,19 +36,20 @@ export const loadContractIntoLibrary = (state, dispatch) => ({
 
 /**
  * @summary This function will take the built smart contracts(and a optional deployed address param)
- * and initialize the smart contract with the deployed version. By default it will pull the latest deployed address from the JSON file.
- * @name initContract
- * @param {Object} actionProps
- * @param {Function} dispatch - the reducer dispatch function which send the payload, type and id
- * to the associated reducer.
- * @param {Object} wallet The wallet of the current application user.
- * As provided by metamask, dapp browser or whichever other provider is triggered by ethereum.enable()
- * ! @NOTE The Contract parameter is assumed to follow the general structure resulting from compiling via the truffle (ie it has the abi, networks used, etc)
+ * and initialize the smart contract with the deployed version.
+ * By default it will pull the latest deployed address from the JSON file.
+ *
+ * @param {Object} Contract The smart contract build object. Assumed to follow the general structure resulting
+ * from compiling via the truffle(ie it has the abi, networks used, etc)
+ *
+ * @param {String} address optional parameter that specifies the deployment address to initialize the contract with.
+ * In the event you need to initialize with a contract that is not the latest deployed.
+ *
  * TODO @todo add extensive error checking
  */
 export const initContract = (state, dispatch) => (Contract, address) => {
   const { wallet } = state;
-  if (wallet === undefined || Contract === NoUndefinedVariables) {
+  if (wallet === undefined || Contract === undefined) {
     return;
   }
   try {
@@ -68,10 +69,10 @@ export const initContract = (state, dispatch) => (Contract, address) => {
   }
 };
 
-export const initContractFromLibrary = (state, dispatch) => (
-  { address, contractName },
-  dispatch
-) =>
+export const initContractFromLibrary = (state, dispatch) => ({
+  address,
+  contractName
+}) =>
   dispatch({
     type: 'INIT_CONTRACT_FROM_LIBRARY_REQUEST',
     payload: {
@@ -80,10 +81,11 @@ export const initContractFromLibrary = (state, dispatch) => (
     }
   });
 
-export const deployContract = (state, dispatch) => (
-  { contract, delta, values },
-  dispatch
-) =>
+export const deployContract = (state, dispatch) => ({
+  contract,
+  delta,
+  values
+}) =>
   dispatch({
     type: 'DEPLOY_CONTRACT_REQUEST',
     payload: {
@@ -96,8 +98,7 @@ export const deployContract = (state, dispatch) => (
 export const deployContractFromBytecode = (state, dispatch) => (
   abi,
   bytecode,
-  delta,
-  dispatch
+  delta
 ) =>
   dispatch({
     type: 'DEPLOY_CONTRACT_FROM_BYTECODE_REQUEST',
@@ -105,10 +106,7 @@ export const deployContractFromBytecode = (state, dispatch) => (
     delta: delta || hashCode(abi)
   });
 
-export const signMessageTyped = (state, dispatch) => (
-  { message, delta },
-  dispatch
-) =>
+export const signMessageTyped = (state, dispatch) => ({ message, delta }) =>
   dispatch({
     type: 'SIGN_TYPED_MESSAGE_REQUEST',
     payload: message,
@@ -122,11 +120,7 @@ export const signMessage = (state, dispatch) => ({ message, delta }) =>
     id: delta || hashCode(message)
   });
 
-export const sendTransaction = (state, dispatch) => (
-  transaction,
-  delta,
-  dispatch
-) =>
+export const sendTransaction = (state, dispatch) => (transaction, delta) =>
   dispatch({
     type: 'SIGN_TRANSACTION_REQUEST',
     input: transaction,
