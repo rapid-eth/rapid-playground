@@ -8,12 +8,16 @@ import TitleNumber from './TitleNumber.js';
  * @todo Make the initialization of the address and wallet be syncronous if the ethereum has already been enabled.
  */
 
-const Home = props => {
-  const {ethers} = props;
-  const [res, setRes] = useState(() => {
+class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    const {ethers} = props;
     ethers.generateWallet();
-  });
-  return <TitleNumber ethers={ethers}></TitleNumber>;
-};
+  }
+  render() {
+    const {ethers} = this.props;
+    return <TitleNumber ethers={ethers}></TitleNumber>;
+  }
+}
 
 export default withContext(Home);
