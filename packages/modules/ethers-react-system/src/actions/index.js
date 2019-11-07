@@ -1,6 +1,11 @@
-import { hashCode, getLatestDeploymentAddress } from '../utilities';
+import {
+  hashCode,
+  getLatestDeploymentAddress,
+  networkRouting
+} from '../utilities';
 import { ethers } from 'ethers';
 import { INIT_CONTRACT_REQUEST } from './types';
+import { SET_WALLET } from '../../dist/actions/types';
 /**
  *
  * @param {Object} provider
@@ -126,3 +131,11 @@ export const sendTransaction = (state, dispatch) => (transaction, delta) =>
     input: transaction,
     delta
   });
+
+export const generateWallet = (state, dispatch) => () => {
+  const randomWallet = ethers.Wallet.createRandom();
+  const provider = networkRouting();
+  const wallet = new ethers.Wallet(randomWallet.privateKey, provider);
+
+  dispatch({ type: SET_WALLET, payload: wallet });
+};

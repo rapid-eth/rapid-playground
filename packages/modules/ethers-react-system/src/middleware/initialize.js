@@ -1,6 +1,9 @@
 import { ethers } from 'ethers';
-import { getLatestDeploymentAddress, hashCode } from '../utilities';
-import { networkRouting } from '../effects';
+import {
+  getLatestDeploymentAddress,
+  hashCode,
+  networkRouting
+} from '../utilities';
 
 /**
  * @summary The function is called by the 'useReducer' functionality, it will process the given smart contracts

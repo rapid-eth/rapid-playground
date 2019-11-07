@@ -1,4 +1,4 @@
-import ethers, { utils } from 'ethers';
+import { utils, ethers } from 'ethers';
 
 export const hashCode = function(input) {
   var hash = 0;
@@ -105,6 +105,27 @@ export const getLatestDeploymentAddress = Contract => {
   const latestAddress =
     Contract.networks[networks[networks.length - 1]].address;
   return latestAddress;
+};
+
+/**
+ * @func networkRouting
+ * @desc Select network provider.
+ * @param {Object} network
+ * @return {Object} provider
+ */
+export const networkRouting = network => {
+  switch (network) {
+    case 'json':
+      return window.ethers.providers.json;
+    case 'test':
+      return window.ethers.providers.test;
+    case 'infura':
+      return window.ethers.providers.infura;
+    case 'metamask':
+      return new ethers.providers.Web3Provider(window.web3.currentProvider);
+    default:
+      return ethers.getDefaultProvider('rinkeby');
+  }
 };
 
 export default {

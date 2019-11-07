@@ -22,3 +22,6 @@ export const SIGN_TYPED_MESSAGE_REQUEST = 'SIGN_TYPED_MESSAGE_REQUEST';
 export const SIGN_MESSAGE_REQUEST = 'SIGN_MESSAGE_REQUEST';
 // ! NOTE: No reducer associated with action
 export const SIGN_TRANSACTION_REQUEST = 'SIGN_TRANSACTION_REQUEST';
+
+// * Wallet
+export const SET_WALLET = 'SET_WALLET';

@@ -7,6 +7,7 @@ import { initialize } from './middleware/initialize';
 /**
  * @todo add reducer middleware
  * @todo Add hooks to query smart contracts
+ * @todo Add dispatch async/await
  */
 const Provider = ({ children, contracts, ...props }) => {
   const initialState = useContext(Context);

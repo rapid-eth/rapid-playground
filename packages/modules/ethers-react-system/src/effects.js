@@ -1,13 +1,13 @@
 import { ethers } from 'ethers';
-import { isAddress } from './utilities';
+import { isAddress, networkRouting } from './utilities';
 
 const effects = (callUseEffect, state, dispatch) => {
-  /**
-   * @function EthereumEnable
-   */
-  callUseEffect(() => {
-    window.ethereum.enable();
-  }, [state.enable]);
+  // /**
+  //  * @function EthereumEnable
+  //  */
+  // callUseEffect(() => {
+  //   window.ethereum.enable();
+  // }, [state.enable]);
 
   /**
    * @function ProviderMonitor
@@ -30,49 +30,49 @@ const effects = (callUseEffect, state, dispatch) => {
     }
   }, [window.web3 && window.web3.currentProvider]);
 
-  /**
-   * @function SetAddress
-   */
-  callUseEffect(() => {
-    const address = window.ethereum && window.ethereum.selectedAddress;
-    if (address) {
-      try {
-        dispatch({
-          type: 'SET_ADDRESS',
-          input: address
-        });
-      } catch (error) {
-        dispatch({
-          type: 'SET_ADDRESS_FAILURE',
-          input: error
-        });
-      }
-    }
-  }, [window.ethereum && window.ethereum.selectedAddress]);
+  // /**
+  //  * @function SetAddress
+  //  */
+  // callUseEffect(() => {
+  //   const address = window.ethereum && window.ethereum.selectedAddress;
+  //   if (address) {
+  //     try {
+  //       dispatch({
+  //         type: 'SET_ADDRESS',
+  //         input: address
+  //       });
+  //     } catch (error) {
+  //       dispatch({
+  //         type: 'SET_ADDRESS_FAILURE',
+  //         input: error
+  //       });
+  //     }
+  //   }
+  // }, [window.ethereum && window.ethereum.selectedAddress]);
 
-  /**
-   * @function SetWallet
-   */
-  callUseEffect(() => {
-    if (state.address) {
-      const runEffect = async () => {
-        try {
-          const provider = await networkRouting('metamask');
-          const wallet = provider.getSigner();
-          dispatch({
-            type: 'SET_WALLET_SUCCESS',
-            payload: wallet
-          });
-        } catch (error) {
-          dispatch({
-            type: 'SET_WALLET_FAILURE',
-            payload: error
-          });
-        }
-      };
-      runEffect();
-    }
-  }, [state.address]);
+  // /**
+  //  * @function SetWallet
+  //  */
+  // callUseEffect(() => {
+  //   if (state.address) {
+  //     const runEffect = async () => {
+  //       try {
+  //         const provider = await networkRouting('metamask');
+  //         const wallet = provider.getSigner();
+  //         dispatch({
+  //           type: 'SET_WALLET_SUCCESS',
+  //           payload: wallet
+  //         });
+  //       } catch (error) {
+  //         dispatch({
+  //           type: 'SET_WALLET_FAILURE',
+  //           payload: error
+  //         });
+  //       }
+  //     };
+  //     runEffect();
+  //   }
+  // }, [state.address]);
 
   /**
    * @function SignMessage
@@ -186,24 +186,3 @@ const effects = (callUseEffect, state, dispatch) => {
 };
 
 export default effects;
-
-/**
- * @func networkRouting
- * @desc Select network provider.
- * @param {Object} network
- * @return {Object} provider
- */
-export const networkRouting = network => {
-  switch (network) {
-    case 'json':
-      return window.ethers.providers.json;
-    case 'test':
-      return window.ethers.providers.test;
-    case 'infura':
-      return window.ethers.providers.infura;
-    case 'metamask':
-      return new ethers.providers.Web3Provider(window.web3.currentProvider);
-    default:
-      return ethers.getDefaultProvider('rinkeby');
-  }
-};

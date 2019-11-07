@@ -36,6 +36,7 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 /**
  * @todo add reducer middleware
  * @todo Add hooks to query smart contracts
+ * @todo Add dispatch async/await
  */
 var Provider = (_ref) => {
   var {

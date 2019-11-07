@@ -3,13 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.sendTransaction = exports.signMessage = exports.signMessageTyped = exports.deployContractFromBytecode = exports.deployContract = exports.initContractFromLibrary = exports.initContract = exports.loadContractIntoLibrary = exports.setProviderStatus = exports.setProvider = void 0;
+exports.generateWallet = exports.sendTransaction = exports.signMessage = exports.signMessageTyped = exports.deployContractFromBytecode = exports.deployContract = exports.initContractFromLibrary = exports.initContract = exports.loadContractIntoLibrary = exports.setProviderStatus = exports.setProvider = void 0;
 
 var _utilities = require("../utilities");
 
 var _ethers = require("ethers");
 
 var _types = require("./types");
+
+var _types2 = require("../../dist/actions/types");
 
 /**
  *
@@ -181,3 +183,16 @@ var sendTransaction = (state, dispatch) => (transaction, delta) => dispatch({
 });
 
 exports.sendTransaction = sendTransaction;
+
+var generateWallet = (state, dispatch) => () => {
+  var randomWallet = _ethers.ethers.Wallet.createRandom();
+
+  var provider = (0, _utilities.networkRouting)();
+  var wallet = new _ethers.ethers.Wallet(randomWallet.privateKey, provider);
+  dispatch({
+    type: _types2.SET_WALLET,
+    payload: wallet
+  });
+};
+
+exports.generateWallet = generateWallet;

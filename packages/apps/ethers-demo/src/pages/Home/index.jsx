@@ -10,6 +10,10 @@ import TitleNumber from './TitleNumber.js';
 
 const Home = props => {
   const {ethers} = props;
+  const [res, setRes] = useState(() => {
+    ethers.generateWallet();
+    return 0;
+  });
   console.log('Ethers: ', ethers);
   return <TitleNumber ethers={ethers}></TitleNumber>;
 };

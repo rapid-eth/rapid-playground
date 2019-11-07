@@ -1419,10 +1419,30 @@
       "links": {},
       "address": "0xb38b13542fCbB0F9B76a0A7cB48AC5659817712D",
       "transactionHash": "0x70e1cf47340b2eeaae030603ddf2e254d17aa850bb825f788b93e854003c655c"
+    },
+    "1573142898668": {
+      "events": {
+        "0x2fd81fd19d3c5c4b396dd13f451dafc8bcac1b3094c49c5fa90e68456323f0e3": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "number",
+              "type": "uint256"
+            }
+          ],
+          "name": "NumberChanged",
+          "type": "event",
+          "signature": "0x2fd81fd19d3c5c4b396dd13f451dafc8bcac1b3094c49c5fa90e68456323f0e3"
+        }
+      },
+      "links": {},
+      "address": "0xBB4ddf1647f84dd1C836440743A34056cE8891c3",
+      "transactionHash": "0x89e453e66b94f81a11e0aa7e288975b05d0800bba674c610564259b5458b8843"
     }
   },
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-11-06T15:05:50.290Z",
+  "updatedAt": "2019-11-07T16:09:39.288Z",
   "devdoc": {
     "methods": {}
   },
