@@ -4,8 +4,6 @@ export const useNumber = Storage => {
 	const [num, setNumber] = useState(0);
 	useEffect(() => {
 		async function handleNumber() {
-			console.log('Number: ', num);
-
 			const number = await Storage.getNumber();
 			setNumber(number.toNumber());
 		}
