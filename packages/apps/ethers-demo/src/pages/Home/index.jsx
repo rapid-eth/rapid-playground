@@ -1,6 +1,5 @@
-import {useState} from 'react';
+import React from 'react';
 import {withContext} from 'ethers-react-system';
-import Storage from '../../ethereum/contracts/Storage.json';
 import TitleNumber from './TitleNumber.js';
 
 /* --- Component --- */
