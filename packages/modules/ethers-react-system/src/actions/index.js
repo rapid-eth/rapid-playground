@@ -146,7 +146,7 @@ export const sendTransaction = (state, dispatch) => (
   contractFunction(...params).then(tx => {
     dispatch({
       type: SIGN_TRANSACTION_REQUEST,
-      input: functionName
+      input: tx
     });
   });
 };

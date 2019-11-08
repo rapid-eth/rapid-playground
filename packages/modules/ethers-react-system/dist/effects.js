@@ -19,13 +19,15 @@ var effects = (callUseEffect, state, dispatch) => {
   // /**
   //  * @function EthereumEnable
   //  */
-  // callUseEffect(() => {
-  //   window.ethereum.enable();
-  // }, [state.enable]);
-
+  callUseEffect(() => {
+    if (!state.wallet) {
+      window.ethereum.enable();
+    }
+  }, [state.enable]);
   /**
    * @function ProviderMonitor
    */
+
   callUseEffect(() => {
     if (window.web3 && window.web3.currentProvider) {
       dispatch({

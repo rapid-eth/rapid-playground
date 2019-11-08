@@ -187,7 +187,7 @@ var sendTransaction = (state, dispatch) => (contractID, functionName, params) =>
   contractFunction(...params).then(tx => {
     dispatch({
       type: _types.SIGN_TRANSACTION_REQUEST,
-      input: functionName
+      input: tx
     });
   });
 };
