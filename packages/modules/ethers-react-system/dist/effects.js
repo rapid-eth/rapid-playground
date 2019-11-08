@@ -20,7 +20,7 @@ var effects = (callUseEffect, state, dispatch) => {
   //  * @function EthereumEnable
   //  */
   callUseEffect(() => {
-    if (!state.wallet) {
+    if (window.ethereum) {
       window.ethereum.enable();
     }
   }, [state.enable]);
@@ -44,26 +44,28 @@ var effects = (callUseEffect, state, dispatch) => {
         payload: undefined
       });
     }
-  }, [window.web3 && window.web3.currentProvider]); // /**
-  //  * @function SetAddress
-  //  */
-  // callUseEffect(() => {
-  //   const address = window.ethereum && window.ethereum.selectedAddress;
-  //   if (address) {
-  //     try {
-  //       dispatch({
-  //         type: 'SET_ADDRESS',
-  //         input: address
-  //       });
-  //     } catch (error) {
-  //       dispatch({
-  //         type: 'SET_ADDRESS_FAILURE',
-  //         input: error
-  //       });
-  //     }
-  //   }
-  // }, [window.ethereum && window.ethereum.selectedAddress]);
+  }, [window.web3 && window.web3.currentProvider]);
+  /**
+   * @function SetAddress
+   */
 
+  callUseEffect(() => {
+    var address = window.ethereum && window.ethereum.selectedAddress;
+
+    if (address) {
+      try {
+        dispatch({
+          type: 'SET_ADDRESS',
+          input: address
+        });
+      } catch (error) {
+        dispatch({
+          type: 'SET_ADDRESS_FAILURE',
+          input: error
+        });
+      }
+    }
+  }, [window.ethereum && window.ethereum.selectedAddress]);
   /**
    * @function SetWallet
    */
@@ -75,17 +77,21 @@ var effects = (callUseEffect, state, dispatch) => {
       function () {
         var _ref = _asyncToGenerator(function* () {
           try {
-            var provider = yield (0, _utilities.networkRouting)('metamask');
+            var provider = (0, _utilities.networkRouting)('metamask');
             var wallet = provider.getSigner();
+            var newContracts = (0, _utilities.generateNewContracts)(state.contracts, wallet);
             dispatch({
               type: _types.SET_WALLET,
-              payload: wallet
+              payload: {
+                wallet,
+                address: state.address,
+                contracts: newContracts
+              }
             });
-          } catch (error) {
-            dispatch({
-              type: 'SET_WALLET_FAILURE',
-              payload: error
-            });
+          } catch (error) {// dispatch({
+            //   type: 'SET_WALLET_FAILURE',
+            //   payload: error
+            // });
           }
         });
 

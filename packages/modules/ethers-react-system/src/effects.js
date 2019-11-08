@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { isAddress, networkRouting } from './utilities';
+import { isAddress, networkRouting, generateNewContracts } from './utilities';
 import { SET_WALLET } from './actions/types';
 
 const effects = (callUseEffect, state, dispatch) => {
@@ -7,7 +7,7 @@ const effects = (callUseEffect, state, dispatch) => {
   //  * @function EthereumEnable
   //  */
   callUseEffect(() => {
-    if (!state.wallet) {
+    if (window.ethereum) {
       window.ethereum.enable();
     }
   }, [state.enable]);
@@ -33,25 +33,25 @@ const effects = (callUseEffect, state, dispatch) => {
     }
   }, [window.web3 && window.web3.currentProvider]);
 
-  // /**
-  //  * @function SetAddress
-  //  */
-  // callUseEffect(() => {
-  //   const address = window.ethereum && window.ethereum.selectedAddress;
-  //   if (address) {
-  //     try {
-  //       dispatch({
-  //         type: 'SET_ADDRESS',
-  //         input: address
-  //       });
-  //     } catch (error) {
-  //       dispatch({
-  //         type: 'SET_ADDRESS_FAILURE',
-  //         input: error
-  //       });
-  //     }
-  //   }
-  // }, [window.ethereum && window.ethereum.selectedAddress]);
+  /**
+   * @function SetAddress
+   */
+  callUseEffect(() => {
+    const address = window.ethereum && window.ethereum.selectedAddress;
+    if (address) {
+      try {
+        dispatch({
+          type: 'SET_ADDRESS',
+          input: address
+        });
+      } catch (error) {
+        dispatch({
+          type: 'SET_ADDRESS_FAILURE',
+          input: error
+        });
+      }
+    }
+  }, [window.ethereum && window.ethereum.selectedAddress]);
 
   /**
    * @function SetWallet
@@ -60,17 +60,22 @@ const effects = (callUseEffect, state, dispatch) => {
     if (state.address && !state.wallet) {
       const runEffect = async () => {
         try {
-          const provider = await networkRouting('metamask');
+          const provider = networkRouting('metamask');
           const wallet = provider.getSigner();
+          const newContracts = generateNewContracts(state.contracts, wallet);
           dispatch({
             type: SET_WALLET,
-            payload: wallet
+            payload: {
+              wallet,
+              address: state.address,
+              contracts: newContracts
+            }
           });
         } catch (error) {
-          dispatch({
-            type: 'SET_WALLET_FAILURE',
-            payload: error
-          });
+          // dispatch({
+          //   type: 'SET_WALLET_FAILURE',
+          //   payload: error
+          // });
         }
       };
       runEffect();

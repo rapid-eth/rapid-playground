@@ -53,8 +53,6 @@ const Context = createContext({
   deployed: [],
   signatures: {},
   address: undefined,
-  addressShortened: undefined,
-  addressTrimmed: undefined,
   wallet: undefined,
   enable: () => {},
   loadContractIntoLibrary: () => {},

@@ -27,15 +27,15 @@ const reducerActions = (state, action) => {
         ...state,
         providerStatus: payload
       };
-    // case 'SET_ADDRESS':
-    //   return {
-    //     ...state,
-    //     address: input
-    //   };
+    case 'SET_ADDRESS':
+      return {
+        ...state,
+        address: input
+      };
     case SET_WALLET:
       return {
         ...state,
-        address: payload.wallet.address,
+        address: payload.address,
         wallet: payload.wallet,
         contracts: payload.contracts
       };

@@ -195,6 +195,10 @@ var sendTransaction = (state, dispatch) => (contractID, functionName, params) =>
 exports.sendTransaction = sendTransaction;
 
 var generateWallet = (state, dispatch) => () => {
+  if (state.wallet) {
+    return;
+  }
+
   var randomWallet = _ethers.ethers.Wallet.createRandom();
 
   var provider = (0, _utilities.networkRouting)('metamask') || (0, _utilities.networkRouting)('json');
@@ -204,6 +208,7 @@ var generateWallet = (state, dispatch) => () => {
     type: _types.SET_WALLET,
     payload: {
       wallet,
+      address: wallet.address,
       contracts
     }
   });

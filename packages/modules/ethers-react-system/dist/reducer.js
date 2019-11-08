@@ -39,15 +39,15 @@ var reducerActions = (state, action) => {
       return _objectSpread({}, state, {
         providerStatus: payload
       });
-    // case 'SET_ADDRESS':
-    //   return {
-    //     ...state,
-    //     address: input
-    //   };
+
+    case 'SET_ADDRESS':
+      return _objectSpread({}, state, {
+        address: input
+      });
 
     case _types.SET_WALLET:
       return _objectSpread({}, state, {
-        address: payload.wallet.address,
+        address: payload.address,
         wallet: payload.wallet,
         contracts: payload.contracts
       });

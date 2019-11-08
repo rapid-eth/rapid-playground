@@ -61,8 +61,6 @@ var Context = (0, _react.createContext)({
   deployed: [],
   signatures: {},
   address: undefined,
-  addressShortened: undefined,
-  addressTrimmed: undefined,
   wallet: undefined,
   enable: () => {},
   loadContractIntoLibrary: () => {},

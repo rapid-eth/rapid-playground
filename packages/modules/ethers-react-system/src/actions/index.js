@@ -152,9 +152,15 @@ export const sendTransaction = (state, dispatch) => (
 };
 
 export const generateWallet = (state, dispatch) => () => {
+  if (state.wallet) {
+    return;
+  }
   const randomWallet = ethers.Wallet.createRandom();
   const provider = networkRouting('metamask') || networkRouting('json');
   const wallet = new ethers.Wallet(randomWallet.privateKey, provider);
   const contracts = generateNewContracts(state.contracts, wallet);
-  dispatch({ type: SET_WALLET, payload: { wallet, contracts } });
+  dispatch({
+    type: SET_WALLET,
+    payload: { wallet, address: wallet.address, contracts }
+  });
 };
