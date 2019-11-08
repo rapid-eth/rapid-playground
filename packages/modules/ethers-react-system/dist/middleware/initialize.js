@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.initialize = void 0;
 
-var _ethers = require("ethers");
-
 var _utilities = require("../utilities");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -24,7 +22,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var initialize = contracts => initialState => {
   var deployed = {};
   contracts.forEach(contract => {
-    var [deployedContract, address] = getContract(contract);
+    var [deployedContract, address] = (0, _utilities.getContract)(contract);
     var id = (0, _utilities.hashCode)(deployedContract);
     deployed[contract.contractName] = _objectSpread({
       id,
@@ -37,11 +35,3 @@ var initialize = contracts => initialState => {
 };
 
 exports.initialize = initialize;
-
-var getContract = contract => {
-  var provider = (0, _utilities.networkRouting)('metamask');
-  var wallet = provider.getSigner();
-  var address = (0, _utilities.getLatestDeploymentAddress)(contract);
-  var deployedContract = new _ethers.ethers.Contract(address, contract.abi, wallet);
-  return [deployedContract, address];
-};

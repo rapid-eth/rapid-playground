@@ -35,7 +35,9 @@ const TitleNumber = ({ethers}) => {
 			<>
 				<h1>The current number is {number}</h1>
 				<button
-					onClick={() => ethers.contracts['Storage'].setNumber(10)}
+					onClick={() =>
+						ethers.sendTransaction('Storage', 'setNumber', [10])
+					}
 				>
 					Set the number to 10
 				</button>

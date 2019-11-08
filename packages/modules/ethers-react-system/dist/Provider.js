@@ -29,10 +29,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
-
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
 /**
  * @todo add reducer middleware
  * @todo Add hooks to query smart contracts
@@ -42,9 +38,7 @@ var Provider = (_ref) => {
   var {
     children,
     contracts
-  } = _ref,
-      props = _objectWithoutProperties(_ref, ["children", "contracts"]);
-
+  } = _ref;
   var initialState = (0, _react.useContext)(_Context.default);
   var [state, dispatch] = (0, _react.useReducer)(_reducer.default, initialState, (0, _initialize.initialize)(contracts));
   var actions = (0, _actions.enhanceActions)(state, dispatch);
@@ -52,7 +46,7 @@ var Provider = (_ref) => {
   return _react.default.createElement(_Context.default.Provider, {
     value: _objectSpread({}, state, {
       dispatch,
-      enable: window.ethereum.enable
+      enable: window.ethereum ? window.ethereum.enable : state.enable
     }, actions)
   }, children);
 };

@@ -9,7 +9,7 @@ import { initialize } from './middleware/initialize';
  * @todo Add hooks to query smart contracts
  * @todo Add dispatch async/await
  */
-const Provider = ({ children, contracts, ...props }) => {
+const Provider = ({ children, contracts }) => {
   const initialState = useContext(Context);
   const [state, dispatch] = useReducer(
     reducers,
@@ -23,7 +23,7 @@ const Provider = ({ children, contracts, ...props }) => {
       value={{
         ...state,
         dispatch,
-        enable: window.ethereum.enable,
+        enable: window.ethereum ? window.ethereum.enable : state.enable,
         ...actions
       }}
     >

@@ -11,8 +11,6 @@ var _ethers = require("ethers");
 
 var _types = require("./types");
 
-var _types2 = require("../../dist/actions/types");
-
 /**
  *
  * @param {Object} provider
@@ -176,22 +174,31 @@ var signMessage = (state, dispatch) => (_ref7) => {
 
 exports.signMessage = signMessage;
 
-var sendTransaction = (state, dispatch) => (transaction, delta) => dispatch({
-  type: 'SIGN_TRANSACTION_REQUEST',
-  input: transaction,
-  delta
-});
+var sendTransaction = (state, dispatch) => (contractID, transaction, params) => {
+  var contract = state.contracts[contractID];
+  var contractFunction = contract[transaction];
+  contractFunction(...params).then(tx => {
+    dispatch({
+      type: _types.SIGN_TRANSACTION_REQUEST,
+      input: transaction
+    });
+  });
+};
 
 exports.sendTransaction = sendTransaction;
 
 var generateWallet = (state, dispatch) => () => {
   var randomWallet = _ethers.ethers.Wallet.createRandom();
 
-  var provider = (0, _utilities.networkRouting)();
+  var provider = (0, _utilities.networkRouting)('metamask') || (0, _utilities.networkRouting)('json');
   var wallet = new _ethers.ethers.Wallet(randomWallet.privateKey, provider);
+  var contracts = (0, _utilities.generateNewContracts)(state.contracts, wallet);
   dispatch({
-    type: _types2.SET_WALLET,
-    payload: wallet
+    type: _types.SET_WALLET,
+    payload: {
+      wallet,
+      contracts
+    }
   });
 };
 

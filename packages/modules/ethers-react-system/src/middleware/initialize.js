@@ -1,9 +1,4 @@
-import { ethers } from 'ethers';
-import {
-  getLatestDeploymentAddress,
-  hashCode,
-  networkRouting
-} from '../utilities';
+import { hashCode, getContract } from '../utilities';
 
 /**
  * @summary The function is called by the 'useReducer' functionality, it will process the given smart contracts
@@ -12,7 +7,7 @@ import {
  * @returns the initial state including with the initialized contracts
  */
 export const initialize = contracts => initialState => {
-  const deployed = {};
+  let deployed = {};
   contracts.forEach(contract => {
     const [deployedContract, address] = getContract(contract);
     const id = hashCode(deployedContract);
@@ -28,12 +23,4 @@ export const initialize = contracts => initialState => {
       ...deployed
     }
   };
-};
-
-const getContract = contract => {
-  const provider = networkRouting('metamask');
-  const wallet = provider.getSigner();
-  const address = getLatestDeploymentAddress(contract);
-  const deployedContract = new ethers.Contract(address, contract.abi, wallet);
-  return [deployedContract, address];
 };

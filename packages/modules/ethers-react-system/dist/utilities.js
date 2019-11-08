@@ -4,9 +4,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.shortenAddress = shortenAddress;
-exports.default = exports.networkRouting = exports.getLatestDeploymentAddress = exports.createStringhash = exports.isAddress = exports.trimBalance = exports.hashCode = void 0;
+exports.default = exports.generateNewContracts = exports.getContract = exports.networkRouting = exports.getLatestDeploymentAddress = exports.createStringhash = exports.isAddress = exports.trimBalance = exports.hashCode = void 0;
 
 var _ethers = require("ethers");
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var hashCode = function hashCode(input) {
   var hash = 0;
@@ -138,7 +144,7 @@ exports.getLatestDeploymentAddress = getLatestDeploymentAddress;
 var networkRouting = network => {
   switch (network) {
     case 'json':
-      return window.ethers.providers.json;
+      return new _ethers.ethers.providers.JsonRpcProvider('http://localhost:8545');
 
     case 'test':
       return window.ethers.providers.test;
@@ -147,7 +153,7 @@ var networkRouting = network => {
       return window.ethers.providers.infura;
 
     case 'metamask':
-      return new _ethers.ethers.providers.Web3Provider(window.web3.currentProvider);
+      return window.web3 ? new _ethers.ethers.providers.Web3Provider(window.web3.currentProvider) : null;
 
     default:
       return _ethers.ethers.getDefaultProvider('rinkeby');
@@ -155,6 +161,43 @@ var networkRouting = network => {
 };
 
 exports.networkRouting = networkRouting;
+
+var getContract = contract => {
+  var provider = networkRouting('metamask') || networkRouting('json');
+  var wallet = provider.getSigner();
+  var address = getLatestDeploymentAddress(contract);
+  var deployedContract = new _ethers.ethers.Contract(address, contract.abi, provider);
+  return [deployedContract, address];
+};
+/**
+ *
+ * @param {Object} oldContracts
+ * @param {ethers.Wallet} wallet
+ */
+
+
+exports.getContract = getContract;
+
+var generateNewContracts = (oldContracts, wallet) => {
+  var newContracts = {};
+  var keys = Object.keys(oldContracts);
+  keys.forEach(id => {
+    var {
+      address,
+      interface: {
+        abi
+      }
+    } = oldContracts[id];
+    var contract = new _ethers.ethers.Contract(address, abi, wallet);
+    newContracts[id] = _objectSpread({
+      id,
+      address
+    }, contract);
+  });
+  return newContracts;
+};
+
+exports.generateNewContracts = generateNewContracts;
 var _default = {
   createStringhash,
   createStringMessageSignature,

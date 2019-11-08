@@ -8,9 +8,10 @@ import {
   INIT_CONTRACT_REQUEST,
   DEPLOY_CONTRACT_REQUEST,
   DEPLOY_CONTRACT_FROM_BYTECODE_REQUEST,
-  LOAD_CONTRACT_INTO_LIBRARY_REQUEST
+  LOAD_CONTRACT_INTO_LIBRARY_REQUEST,
+  SET_WALLET,
+  SIGN_TRANSACTION_REQUEST
 } from './actions/types';
-import { SET_WALLET } from '../dist/actions/types';
 
 const reducerActions = (state, action) => {
   let filtered;
@@ -31,22 +32,17 @@ const reducerActions = (state, action) => {
     //     ...state,
     //     address: input
     //   };
-    // case 'SET_ADDRESS_FAILURE':
-    //   return {
-    //     ...state,
-    //     address: input
-    //   };
     case SET_WALLET:
       return {
         ...state,
-        address: payload.address,
-        wallet: payload
+        address: payload.wallet.address,
+        wallet: payload.wallet,
+        contracts: payload.contracts
       };
-    // case 'SET_WALLET_SUCCESS':
-    //   return {
-    //     ...state,
-    //     wallet: payload
-    //   };
+    case SIGN_TRANSACTION_REQUEST:
+      return {
+        ...state
+      };
     case SIGN_TYPED_MESSAGE_REQUEST:
       return {
         ...state,

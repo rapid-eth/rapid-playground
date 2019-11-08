@@ -1,11 +1,15 @@
 import {
   hashCode,
   getLatestDeploymentAddress,
+  generateNewContracts,
   networkRouting
 } from '../utilities';
 import { ethers } from 'ethers';
-import { INIT_CONTRACT_REQUEST } from './types';
-import { SET_WALLET } from '../../dist/actions/types';
+import {
+  INIT_CONTRACT_REQUEST,
+  SET_WALLET,
+  SIGN_TRANSACTION_REQUEST
+} from './types';
 /**
  *
  * @param {Object} provider
@@ -57,6 +61,7 @@ export const initContract = (state, dispatch) => (Contract, address) => {
   if (wallet === undefined || Contract === undefined) {
     return;
   }
+
   try {
     const latestAddress = getLatestDeploymentAddress(Contract);
     const contract = new ethers.Contract(latestAddress, Contract.abi, wallet);
@@ -125,17 +130,25 @@ export const signMessage = (state, dispatch) => ({ message, delta }) =>
     id: delta || hashCode(message)
   });
 
-export const sendTransaction = (state, dispatch) => (transaction, delta) =>
-  dispatch({
-    type: 'SIGN_TRANSACTION_REQUEST',
-    input: transaction,
-    delta
+export const sendTransaction = (state, dispatch) => (
+  contractID,
+  transaction,
+  params
+) => {
+  const contract = state.contracts[contractID];
+  const contractFunction = contract[transaction];
+  contractFunction(...params).then(tx => {
+    dispatch({
+      type: SIGN_TRANSACTION_REQUEST,
+      input: transaction
+    });
   });
+};
 
 export const generateWallet = (state, dispatch) => () => {
   const randomWallet = ethers.Wallet.createRandom();
-  const provider = networkRouting();
+  const provider = networkRouting('metamask') || networkRouting('json');
   const wallet = new ethers.Wallet(randomWallet.privateKey, provider);
-
-  dispatch({ type: SET_WALLET, payload: wallet });
+  const contracts = generateNewContracts(state.contracts, wallet);
+  dispatch({ type: SET_WALLET, payload: { wallet, contracts } });
 };

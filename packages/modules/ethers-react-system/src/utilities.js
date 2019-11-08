@@ -116,18 +116,51 @@ export const getLatestDeploymentAddress = Contract => {
 export const networkRouting = network => {
   switch (network) {
     case 'json':
-      return window.ethers.providers.json;
+      return new ethers.providers.JsonRpcProvider('http://localhost:8545');
     case 'test':
       return window.ethers.providers.test;
     case 'infura':
       return window.ethers.providers.infura;
     case 'metamask':
-      return new ethers.providers.Web3Provider(window.web3.currentProvider);
+      return window.web3
+        ? new ethers.providers.Web3Provider(window.web3.currentProvider)
+        : null;
     default:
       return ethers.getDefaultProvider('rinkeby');
   }
 };
 
+export const getContract = contract => {
+  const provider = networkRouting('metamask') || networkRouting('json');
+  const wallet = provider.getSigner();
+  const address = getLatestDeploymentAddress(contract);
+  const deployedContract = new ethers.Contract(address, contract.abi, provider);
+  return [deployedContract, address];
+};
+
+/**
+ *
+ * @param {Object} oldContracts
+ * @param {ethers.Wallet} wallet
+ */
+export const generateNewContracts = (oldContracts, wallet) => {
+  let newContracts = {};
+  const keys = Object.keys(oldContracts);
+  keys.forEach(id => {
+    const {
+      address,
+      interface: { abi }
+    } = oldContracts[id];
+    const contract = new ethers.Contract(address, abi, wallet);
+    newContracts[id] = {
+      id,
+      address,
+      ...contract
+    };
+  });
+
+  return newContracts;
+};
 export default {
   createStringhash,
   createStringMessageSignature,

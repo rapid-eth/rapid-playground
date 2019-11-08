@@ -11,8 +11,6 @@ var _utilities = require("./utilities");
 
 var _types = require("./actions/types");
 
-var _types2 = require("../dist/actions/types");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -46,22 +44,16 @@ var reducerActions = (state, action) => {
     //     ...state,
     //     address: input
     //   };
-    // case 'SET_ADDRESS_FAILURE':
-    //   return {
-    //     ...state,
-    //     address: input
-    //   };
 
-    case _types2.SET_WALLET:
+    case _types.SET_WALLET:
       return _objectSpread({}, state, {
-        address: payload.address,
-        wallet: payload
+        address: payload.wallet.address,
+        wallet: payload.wallet,
+        contracts: payload.contracts
       });
-    // case 'SET_WALLET_SUCCESS':
-    //   return {
-    //     ...state,
-    //     wallet: payload
-    //   };
+
+    case _types.SIGN_TRANSACTION_REQUEST:
+      return _objectSpread({}, state);
 
     case _types.SIGN_TYPED_MESSAGE_REQUEST:
       return _objectSpread({}, state, {

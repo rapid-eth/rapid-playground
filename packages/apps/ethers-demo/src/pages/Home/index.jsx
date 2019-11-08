@@ -6,7 +6,6 @@ import TitleNumber from './TitleNumber.js';
 /**
  * @todo Make the initialization of the address and wallet be syncronous if the ethereum has already been enabled.
  */
-
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -15,6 +14,7 @@ class Home extends React.Component {
   }
   render() {
     const {ethers} = this.props;
+    console.log('Ethers: ', ethers);
     return <TitleNumber ethers={ethers}></TitleNumber>;
   }
 }

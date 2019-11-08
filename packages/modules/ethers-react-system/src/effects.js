@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import { isAddress, networkRouting } from './utilities';
+import { SET_WALLET } from './actions/types';
 
 const effects = (callUseEffect, state, dispatch) => {
   // /**
@@ -50,29 +51,29 @@ const effects = (callUseEffect, state, dispatch) => {
   //   }
   // }, [window.ethereum && window.ethereum.selectedAddress]);
 
-  // /**
-  //  * @function SetWallet
-  //  */
-  // callUseEffect(() => {
-  //   if (state.address) {
-  //     const runEffect = async () => {
-  //       try {
-  //         const provider = await networkRouting('metamask');
-  //         const wallet = provider.getSigner();
-  //         dispatch({
-  //           type: 'SET_WALLET_SUCCESS',
-  //           payload: wallet
-  //         });
-  //       } catch (error) {
-  //         dispatch({
-  //           type: 'SET_WALLET_FAILURE',
-  //           payload: error
-  //         });
-  //       }
-  //     };
-  //     runEffect();
-  //   }
-  // }, [state.address]);
+  /**
+   * @function SetWallet
+   */
+  callUseEffect(() => {
+    if (state.address && !state.wallet) {
+      const runEffect = async () => {
+        try {
+          const provider = await networkRouting('metamask');
+          const wallet = provider.getSigner();
+          dispatch({
+            type: SET_WALLET,
+            payload: wallet
+          });
+        } catch (error) {
+          dispatch({
+            type: 'SET_WALLET_FAILURE',
+            payload: error
+          });
+        }
+      };
+      runEffect();
+    }
+  }, [state.address]);
 
   /**
    * @function SignMessage

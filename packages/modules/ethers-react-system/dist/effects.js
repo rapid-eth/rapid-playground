@@ -9,6 +9,8 @@ var _ethers = require("ethers");
 
 var _utilities = require("./utilities");
 
+var _types = require("./actions/types");
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -59,30 +61,40 @@ var effects = (callUseEffect, state, dispatch) => {
   //     }
   //   }
   // }, [window.ethereum && window.ethereum.selectedAddress]);
-  // /**
-  //  * @function SetWallet
-  //  */
-  // callUseEffect(() => {
-  //   if (state.address) {
-  //     const runEffect = async () => {
-  //       try {
-  //         const provider = await networkRouting('metamask');
-  //         const wallet = provider.getSigner();
-  //         dispatch({
-  //           type: 'SET_WALLET_SUCCESS',
-  //           payload: wallet
-  //         });
-  //       } catch (error) {
-  //         dispatch({
-  //           type: 'SET_WALLET_FAILURE',
-  //           payload: error
-  //         });
-  //       }
-  //     };
-  //     runEffect();
-  //   }
-  // }, [state.address]);
 
+  /**
+   * @function SetWallet
+   */
+
+  callUseEffect(() => {
+    if (state.address && !state.wallet) {
+      var runEffect =
+      /*#__PURE__*/
+      function () {
+        var _ref = _asyncToGenerator(function* () {
+          try {
+            var provider = yield (0, _utilities.networkRouting)('metamask');
+            var wallet = provider.getSigner();
+            dispatch({
+              type: _types.SET_WALLET,
+              payload: wallet
+            });
+          } catch (error) {
+            dispatch({
+              type: 'SET_WALLET_FAILURE',
+              payload: error
+            });
+          }
+        });
+
+        return function runEffect() {
+          return _ref.apply(this, arguments);
+        };
+      }();
+
+      runEffect();
+    }
+  }, [state.address]);
   /**
    * @function SignMessage
    * @description SIGN_MESSAGE_REQUEST
@@ -93,7 +105,7 @@ var effects = (callUseEffect, state, dispatch) => {
       var runEffect =
       /*#__PURE__*/
       function () {
-        var _ref = _asyncToGenerator(function* () {
+        var _ref2 = _asyncToGenerator(function* () {
           var messageRequest = state.store.messages[0];
 
           try {
@@ -130,7 +142,7 @@ var effects = (callUseEffect, state, dispatch) => {
         });
 
         return function runEffect() {
-          return _ref.apply(this, arguments);
+          return _ref2.apply(this, arguments);
         };
       }();
 
@@ -147,7 +159,7 @@ var effects = (callUseEffect, state, dispatch) => {
       var runEffect =
       /*#__PURE__*/
       function () {
-        var _ref2 = _asyncToGenerator(function* () {
+        var _ref3 = _asyncToGenerator(function* () {
           var contract, deployed, transaction;
           var request = state.store.deploy[0];
           var {
@@ -174,7 +186,7 @@ var effects = (callUseEffect, state, dispatch) => {
         });
 
         return function runEffect() {
-          return _ref2.apply(this, arguments);
+          return _ref3.apply(this, arguments);
         };
       }();
 
