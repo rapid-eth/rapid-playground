@@ -171,16 +171,23 @@ var signMessage = (state, dispatch) => (_ref7) => {
     id: delta || (0, _utilities.hashCode)(message)
   });
 };
+/**
+ *
+ * @param {String} contractID
+ * @param {String} functionName
+ * @param {Array} params
+ */
+
 
 exports.signMessage = signMessage;
 
-var sendTransaction = (state, dispatch) => (contractID, transaction, params) => {
+var sendTransaction = (state, dispatch) => (contractID, functionName, params) => {
   var contract = state.contracts[contractID];
-  var contractFunction = contract[transaction];
+  var contractFunction = contract[functionName];
   contractFunction(...params).then(tx => {
     dispatch({
       type: _types.SIGN_TRANSACTION_REQUEST,
-      input: transaction
+      input: functionName
     });
   });
 };

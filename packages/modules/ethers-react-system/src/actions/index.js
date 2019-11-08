@@ -130,17 +130,23 @@ export const signMessage = (state, dispatch) => ({ message, delta }) =>
     id: delta || hashCode(message)
   });
 
+/**
+ *
+ * @param {String} contractID
+ * @param {String} functionName
+ * @param {Array} params
+ */
 export const sendTransaction = (state, dispatch) => (
   contractID,
-  transaction,
+  functionName,
   params
 ) => {
   const contract = state.contracts[contractID];
-  const contractFunction = contract[transaction];
+  const contractFunction = contract[functionName];
   contractFunction(...params).then(tx => {
     dispatch({
       type: SIGN_TRANSACTION_REQUEST,
-      input: transaction
+      input: functionName
     });
   });
 };
