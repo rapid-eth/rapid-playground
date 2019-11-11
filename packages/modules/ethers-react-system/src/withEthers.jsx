@@ -6,10 +6,10 @@ import Context from './Context';
  * @param {React.Component} Component the child component of the HOC. It will have the ethers state object as a prop
  * @returns {React.Component} returns the new React component created by the HOC
  */
-const withContext = Component => () => (
+const withEthers = Component => () => (
   <Context.Consumer>
     {ethers => <Component ethers={ethers}></Component>}
   </Context.Consumer>
 );
 
-export default withContext;
+export default withEthers;

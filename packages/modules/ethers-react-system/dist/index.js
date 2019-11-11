@@ -15,10 +15,10 @@ Object.defineProperty(exports, "EthersContext", {
     return _Context.default;
   }
 });
-Object.defineProperty(exports, "withContext", {
+Object.defineProperty(exports, "withEthers", {
   enumerable: true,
   get: function get() {
-    return _withContext.default;
+    return _withEthers.default;
   }
 });
 Object.defineProperty(exports, "EthersInject", {
@@ -38,7 +38,7 @@ var _Provider = _interopRequireDefault(require("./Provider"));
 
 var _Context = _interopRequireDefault(require("./Context"));
 
-var _withContext = _interopRequireDefault(require("./withContext"));
+var _withEthers = _interopRequireDefault(require("./withEthers"));
 
 var _withContextPassed = _interopRequireDefault(require("./withContextPassed"));
 

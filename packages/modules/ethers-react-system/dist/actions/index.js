@@ -181,16 +181,23 @@ var signMessage = (state, dispatch) => (_ref7) => {
 
 exports.signMessage = signMessage;
 
-var sendTransaction = (state, dispatch) => (contractID, functionName, params) => {
+var sendTransaction = (state, dispatch) => function (contractID, functionName) {
+  var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
   var contract = state.contracts[contractID];
   var contractFunction = contract[functionName];
   contractFunction(...params).then(tx => {
-    dispatch({
+    console.log(tx);
+    return dispatch({
       type: _types.SIGN_TRANSACTION_REQUEST,
-      input: tx
+      id: contractID,
+      payload: tx.toNumber()
     });
   });
 };
+/**
+ * @summary
+ */
+
 
 exports.sendTransaction = sendTransaction;
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {withContext} from 'ethers-react-system';
+import {withEthers} from 'ethers-react-system';
 import TitleNumber from './TitleNumber.js';
 
 /* --- Component --- */
@@ -14,9 +14,8 @@ class Home extends React.Component {
   }
   render() {
     const {ethers} = this.props;
-    console.log('Ethers: ', ethers);
     return <TitleNumber ethers={ethers}></TitleNumber>;
   }
 }
 
-export default withContext(Home);
+export default withEthers(Home);

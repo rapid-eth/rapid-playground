@@ -30,14 +30,19 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /**
- * @todo add reducer middleware
+ * @summary A React Context Provider that provides a simple interface to most ethers.js functionality.
+ * It allows for easy contract management and querying/transactions of the smart contracts.
+ * @param {Array<React.Component>} children
+ * @param {Array} contracts
+ * @param {String} provider
  * @todo Add hooks to query smart contracts
  * @todo Add dispatch async/await
  */
 var Provider = (_ref) => {
   var {
     children,
-    contracts
+    contracts,
+    provider
   } = _ref;
   var initialState = (0, _react.useContext)(_Context.default);
   var [state, dispatch] = (0, _react.useReducer)(_reducer.default, initialState, (0, _initialize.initialize)(contracts));

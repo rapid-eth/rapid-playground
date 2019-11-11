@@ -53,7 +53,11 @@ var reducerActions = (state, action) => {
       });
 
     case _types.SIGN_TRANSACTION_REQUEST:
-      return _objectSpread({}, state);
+      return _objectSpread({}, state, {
+        signatures: _objectSpread({}, state.signatures, {
+          [id]: payload
+        })
+      });
 
     case _types.SIGN_TYPED_MESSAGE_REQUEST:
       return _objectSpread({}, state, {
