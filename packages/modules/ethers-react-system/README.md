@@ -101,25 +101,6 @@ the function requires the contract address and ABI and has additional optional r
 
 ```js
 import React from 'react';
-import { EthersProvider } from '@rapid/ethers-hooks';
-import WrappedApp from './WrappedApp';
-import TestContract from './build/TestContract.json';
-const deployedAddress = '0x...';
-
-const App = () => {
-  return (
-    <EthersProvider>
-      <WrappedApp />
-    </EthersProvider>
-  );
-};
-
-export default App;
-// script
-```
-
-```js
-import React from 'react';
 import { withEthers } from '@rapid/ethers-hooks';
 import TestContract from './build/TestContract.json';
 // you can optionally pass the deployedAddress but by default
@@ -140,6 +121,26 @@ class WrappedApp extends React.Component {
 }
 
 export default withEthers(WrappedApp);
+// script
+```
+
+### Via Ethers Provider
+
+```js
+import React from 'react';
+import { EthersProvider } from '@rapid/ethers-hooks';
+import WrappedApp from './WrappedApp';
+import TestContract from './build/TestContract.json';
+
+const App = () => {
+  return (
+    <EthersProvider contracts={[TestContract]}>
+      <WrappedApp />
+    </EthersProvider>
+  );
+};
+
+export default App;
 // script
 ```
 
