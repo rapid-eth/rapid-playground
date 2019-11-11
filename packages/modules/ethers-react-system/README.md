@@ -93,7 +93,7 @@ There are two major ways of initializing contracts. Either through the action cr
 ### Via Actions Creator
 
 ```js
-ethers.initContract(...params);
+ethers.initContract(Contract[,deployedAddress]);
 // script
 ```
 
