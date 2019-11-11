@@ -88,7 +88,9 @@ export default App;
 
 ## Initializing Contracts
 
-You can initialize contracts using
+There are two major ways of initializing contracts. Either through the action creator or by passing it to the top-level provider.
+
+### Via Actions Creator
 
 ```js
 ethers.initContract(...params);
@@ -98,7 +100,9 @@ ethers.initContract(...params);
 the function requires the contract address and ABI and has additional optional requirements.
 
 ```js
-import { EthersProvider, EthersConsumer } from '@rapid/ethers-hooks';
+import React from 'react';
+import { EthersProvider } from '@rapid/ethers-hooks';
+import WrappedApp from './WrappedApp';
 import TestContract from './build/TestContract.json';
 const deployedAddress = '0x...';
 
@@ -110,22 +114,32 @@ const App = () => {
   );
 };
 
-const WrappedApp = () => {
-  return (
-    <EthersConsumer>
-      {ethers => {
-        ethers.initContract({
-          abi: TestContract.abi,
-          address: deployedAddress
-        });
-
-        return <h1>There are {ethers.deployed.length} deployed.</h1>;
-      }}
-    </EthersConsumer>
-  );
-};
-
 export default App;
+// script
+```
+
+```js
+import React from 'react';
+import { withEthers } from '@rapid/ethers-hooks';
+import TestContract from './build/TestContract.json';
+// you can optionally pass the deployedAddress but by default
+// it will be initialized to the latest deployment address
+const deployedAddress = '0x...';
+
+class WrappedApp extends React.Component {
+  constructor(props) {
+    super(props);
+    const { ethers } = props;
+    ethers.initContract(TestContract);
+  }
+  render() {
+    const { ethers } = this.props;
+    const contracts = Object.keys(ethers.contracts);
+    return <h1>There are {contracts.length} initialized</h1>;
+  }
+}
+
+export default withEthers(WrappedApp);
 // script
 ```
 
