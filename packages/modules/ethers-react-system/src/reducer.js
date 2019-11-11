@@ -41,7 +41,11 @@ const reducerActions = (state, action) => {
       };
     case SIGN_TRANSACTION_REQUEST:
       return {
-        ...state
+        ...state,
+        signatures: {
+          ...state.signatures,
+          [id]: payload
+        }
       };
     case SIGN_TYPED_MESSAGE_REQUEST:
       return {

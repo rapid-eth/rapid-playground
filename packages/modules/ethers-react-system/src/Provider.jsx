@@ -5,11 +5,15 @@ import ProviderEffects from './effects';
 import { enhanceActions } from './middleware/actions';
 import { initialize } from './middleware/initialize';
 /**
- * @todo add reducer middleware
+ * @summary A React Context Provider that provides a simple interface to most ethers.js functionality.
+ * It allows for easy contract management and querying/transactions of the smart contracts.
+ * @param {Array<React.Component>} children
+ * @param {Array} contracts
+ * @param {String} provider
  * @todo Add hooks to query smart contracts
  * @todo Add dispatch async/await
  */
-const Provider = ({ children, contracts }) => {
+const Provider = ({ children, contracts, provider }) => {
   const initialState = useContext(Context);
   const [state, dispatch] = useReducer(
     reducers,

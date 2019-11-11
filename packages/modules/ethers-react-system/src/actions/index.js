@@ -139,18 +139,23 @@ export const signMessage = (state, dispatch) => ({ message, delta }) =>
 export const sendTransaction = (state, dispatch) => (
   contractID,
   functionName,
-  params
+  params = []
 ) => {
   const contract = state.contracts[contractID];
   const contractFunction = contract[functionName];
   contractFunction(...params).then(tx => {
-    dispatch({
+    console.log(tx);
+    return dispatch({
       type: SIGN_TRANSACTION_REQUEST,
-      input: tx
+      id: contractID,
+      payload: tx.toNumber()
     });
   });
 };
 
+/**
+ * @summary
+ */
 export const generateWallet = (state, dispatch) => () => {
   if (state.wallet) {
     return;
