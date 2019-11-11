@@ -18,7 +18,7 @@ const Provider = ({ children, contracts, provider }) => {
   const [state, dispatch] = useReducer(
     reducers,
     initialState,
-    initialize(contracts)
+    initialize(contracts, provider)
   );
   const actions = enhanceActions(state, dispatch);
   ProviderEffects(useEffect, state, dispatch);

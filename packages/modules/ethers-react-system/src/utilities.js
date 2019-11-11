@@ -119,6 +119,8 @@ export const networkRouting = network => {
       return new ethers.providers.JsonRpcProvider('http://localhost:8545');
     case 'test':
       return window.ethers.providers.test;
+    case 'rinkeby':
+      return ethers.getDefaultProvider('rinkeby');
     case 'infura':
       return window.ethers.providers.infura;
     case 'metamask':
@@ -126,13 +128,20 @@ export const networkRouting = network => {
         ? new ethers.providers.Web3Provider(window.web3.currentProvider)
         : null;
     default:
-      return ethers.getDefaultProvider('rinkeby');
+      return null;
   }
 };
 
-export const getContract = contract => {
-  const provider = networkRouting('metamask') || networkRouting('json');
-  const wallet = provider.getSigner();
+/**
+ *
+ * @param {JSON} contract
+ * @param {String} providerName
+ */
+export const getContract = (contract, providerName) => {
+  const provider =
+    networkRouting(providerName) ||
+    networkRouting('metamask') ||
+    networkRouting('json');
   const address = getLatestDeploymentAddress(contract);
   const deployedContract = new ethers.Contract(address, contract.abi, provider);
   return [deployedContract, address];

@@ -11,7 +11,7 @@ export default props => {
   return (
     <ThemeProviderEmotion theme={theme}>
       <PortalProvider>
-        <EthersProvider contracts={[Storage]} provider={'json'}>
+        <EthersProvider contracts={[Storage]}>
           <PortalTree />
           {props.children}
         </EthersProvider>

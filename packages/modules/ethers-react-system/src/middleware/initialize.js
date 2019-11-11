@@ -6,13 +6,13 @@ import { hashCode, getContract } from '../utilities';
  * @param {Array} contracts an array of the contract ABIs to be initialized
  * @returns the initial state including with the initialized contracts(if provided)
  */
-export const initialize = contracts => initialState => {
+export const initialize = (contracts, provider) => initialState => {
   if (!contracts) {
     return initialState;
   }
   let deployed = {};
   contracts.forEach(contract => {
-    const [deployedContract, address] = getContract(contract);
+    const [deployedContract, address] = getContract(contract, provider);
     const id = hashCode(deployedContract);
     deployed[contract.contractName] = {
       id,
@@ -22,6 +22,7 @@ export const initialize = contracts => initialState => {
   });
   return {
     ...initialState,
+    provider,
     contracts: {
       ...deployed
     }

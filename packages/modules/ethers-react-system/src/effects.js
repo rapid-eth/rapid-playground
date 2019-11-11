@@ -7,7 +7,7 @@ const effects = (callUseEffect, state, dispatch) => {
   //  * @function EthereumEnable
   //  */
   callUseEffect(() => {
-    if (window.ethereum) {
+    if (window.ethereum && !state.wallet) {
       window.ethereum.enable();
     }
   }, [state.enable]);
