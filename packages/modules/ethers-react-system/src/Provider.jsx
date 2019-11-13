@@ -12,6 +12,8 @@ import { initialize } from './middleware/initialize';
  * @param {String} provider
  * @todo Add hooks to query smart contracts
  * @todo Add dispatch async/await
+ * @todo Add better error handling
+ * @todo Add option to initialize a contract not deployed
  */
 const Provider = ({ children, contracts, provider }) => {
   const initialState = useContext(Context);
