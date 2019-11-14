@@ -46,13 +46,13 @@ Add Linting back to package.json
 
 ## Install
 
-[npm][]:
+### [npm]
 
 ```sh
 npm install @rapid/ethers-providers
 ```
 
-[yarn][]:
+### [yarn][]
 
 ```sh
 yarn add @rapid/ethers-providers
