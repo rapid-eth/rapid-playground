@@ -6,20 +6,18 @@
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![made with lass](https://img.shields.io/badge/made_with-lass-95CC28.svg)](https://lass.js.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm downloads](https://img.shields.io/npm/dt/react-context-portal.svg)](https://npm.im/ethers-react-system)
-
-Components
+[![npm downloads](https://img.shields.io/npm/dt/react-context-portal.svg)](https://npm.im/ethers-provider)
 
 example contract: 0x4c5effcd6eb5fa67e330c5d29f87df52dff01c05
 
-```
-npm install @rapid/ethers-hooks
+```js
+npm install ethers-provider
 ```
 
-### Example
+## Example
 
 ```js
-import { EthersProvider } from '@rapid/ethers-hooks';
+import { EthersProvider } from 'ethers-provider';
 
 <App>
   <EthersProvider>...</EthersProvider>
@@ -37,6 +35,7 @@ Add Linting back to package.json
 - [Usage](#usage)
 - [Getting Started](#getting-started)
 - [Initialize Contracts](#initializing-contracts)
+- [Wallet Generation](#wallet-generation)
 - [Deploy Contracts](#deploy-contracts)
 - [Sign Transaction](#sign-transaction)
 - [Sign Message](#sign-message)
@@ -47,16 +46,16 @@ Add Linting back to package.json
 
 ## Install
 
-[npm][]:
+### [npm]
 
 ```sh
-npm install @rapid/ethers-hooks
+npm install ethers-providers
 ```
 
-[yarn][]:
+### [yarn][]
 
 ```sh
-yarn add @rapid/ethers-hooks
+yarn add ethers-providers
 ```
 
 ## Getting Started
@@ -144,25 +143,65 @@ export default App;
 // script
 ```
 
-## Deploy Contracts
+## Wallet Generation
 
-Insert documention for contract deployment
+Although the provider defaults to utilizing the Ethereum provider (either via Metamask or a dApp browser).
+It is possible to generate a burner wallet that can be utilized in the absence of Metamask or dApp browser.
 
-## Sign Transaction
+The following action creator will generate a wallet with the set provider(defaulting the JSON if none). It will set the wallet and address property of the ethers state object.
 
-Insert documentation for transaction signing/sending
+```js
+ethers.generateWallet();
+// script
+```
+
+```js
+import React from 'react';
+import { withEthers } from 'ethers-provider';
+
+class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    const { ethers } = props;
+    ethers.generateWallet();
+  }
+
+  render() {
+    const { ethers } = this.props;
+    return <h1>The address is {ethers.address}</h1>;
+  }
+}
+
+export default withEthers(Home);
+// script
+```
+
+## Send Transaction
+
+The ether object contains a sendTransaction function that can be used to interfact with a smart contract. The contractID and functionName to interfact with must be provided as well as an array of the parameters of the given function.
+
+```js
+ethers.sendTransaction(contractID, functionName, params);
+//script
+```
+
+The action creator will sign and send the transaction to the network currently connected to.
+
+### <p style="color:orange">Warning</p>
+
+Presently there are **known** issues with error handling with send transactions. This error causes transactions to fail silently. Until the issue is solved directly utilize the initiated contracts to send transactions.
 
 ## Sign Message
 
-Insert documentation for signing messages
+Message Signing Functionality WIP. Once the fucntionality is implemented and tested the documentation will be added.
 
 ## Sign Typed Message
 
-Insert documentation for signing typed messages (ERC712)
+Typed Message Signing (ERC712) Functionality WIP. Once the fucntionality is implemented and tested the documentation will be added.
 
 ## Message Decryption and Encryption
 
-Insert documentation for encrypting and decrypting messages
+Message Decryption/Encryption WIP. Once the fucntionality is implemented and tested the documentation will be added.
 
 ## Contributors
 
@@ -174,8 +213,6 @@ Insert documentation for encrypting and decrypting messages
 ## License
 
 [MIT](LICENSE) © [Kames](https://www.kamescg.com)
-
-##
 
 [npm]: https://www.npmjs.com/
 [yarn]: https://yarnpkg.com/
