@@ -8,15 +8,13 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm downloads](https://img.shields.io/npm/dt/react-context-portal.svg)](https://npm.im/ethers-react-system)
 
-Components
-
 example contract: 0x4c5effcd6eb5fa67e330c5d29f87df52dff01c05
 
-```
+```js
 npm install @rapid/ethers-provider
 ```
 
-### Example
+## Example
 
 ```js
 import { EthersProvider } from '@rapid/ethers-provider';
@@ -51,13 +49,13 @@ Add Linting back to package.json
 [npm][]:
 
 ```sh
-npm install @rapid/ethers-hooks
+npm install @rapid/ethers-providers
 ```
 
 [yarn][]:
 
 ```sh
-yarn add @rapid/ethers-hooks
+yarn add @rapid/ethers-providers
 ```
 
 ## Getting Started
