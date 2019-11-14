@@ -176,6 +176,10 @@ export default withEthers(Home);
 // script
 ```
 
+## Sign Transaction
+
+Insert documentation for sending transactions
+
 ## Sign Message
 
 Insert documentation for signing messages
@@ -198,8 +202,6 @@ Insert documentation for encrypting and decrypting messages
 ## License
 
 [MIT](LICENSE) © [Kames](https://www.kamescg.com)
-
-##
 
 [npm]: https://www.npmjs.com/
 [yarn]: https://yarnpkg.com/
