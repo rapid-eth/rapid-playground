@@ -13,13 +13,13 @@ Components
 example contract: 0x4c5effcd6eb5fa67e330c5d29f87df52dff01c05
 
 ```
-npm install @rapid/ethers-hooks
+npm install @rapid/ethers-provider
 ```
 
 ### Example
 
 ```js
-import { EthersProvider } from '@rapid/ethers-hooks';
+import { EthersProvider } from '@rapid/ethers-provider';
 
 <App>
   <EthersProvider>...</EthersProvider>
@@ -37,6 +37,7 @@ Add Linting back to package.json
 - [Usage](#usage)
 - [Getting Started](#getting-started)
 - [Initialize Contracts](#initializing-contracts)
+- [Wallet Generation](#wallet-generation)
 - [Deploy Contracts](#deploy-contracts)
 - [Sign Transaction](#sign-transaction)
 - [Sign Message](#sign-message)
@@ -144,13 +145,38 @@ export default App;
 // script
 ```
 
-## Deploy Contracts
+## Wallet Generation
 
-Insert documention for contract deployment
+Although the provider defaults to utilizing the Ethereum provider (either via Metamask or a dApp browser).
+It is possible to generate a burner wallet that can be utilized in the absence of Metamask or dApp browser.
 
-## Sign Transaction
+The following action creator will generate a wallet with the set provider(defaulting the JSON if none). It will set the wallet and address property of the ethers state object.
 
-Insert documentation for transaction signing/sending
+```js
+ethers.generateWallet()
+// script
+```
+
+```js
+import React from 'react';
+import { withEthers } from 'ethers-react-system';
+
+class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    const { ethers } = props;
+    ethers.generateWallet();
+  }
+
+  render() {
+    const { ethers } = this.props;
+    return <h1>The address is {ethers.address}</h1>
+  }
+}
+
+export default withEthers(Home);
+// script
+```
 
 ## Sign Message
 
