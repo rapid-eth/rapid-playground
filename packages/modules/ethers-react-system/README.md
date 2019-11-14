@@ -6,18 +6,18 @@
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![made with lass](https://img.shields.io/badge/made_with-lass-95CC28.svg)](https://lass.js.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm downloads](https://img.shields.io/npm/dt/react-context-portal.svg)](https://npm.im/ethers-react-system)
+[![npm downloads](https://img.shields.io/npm/dt/react-context-portal.svg)](https://npm.im/ethers-provider)
 
 example contract: 0x4c5effcd6eb5fa67e330c5d29f87df52dff01c05
 
 ```js
-npm install @rapid/ethers-provider
+npm install ethers-provider
 ```
 
 ## Example
 
 ```js
-import { EthersProvider } from '@rapid/ethers-provider';
+import { EthersProvider } from 'ethers-provider';
 
 <App>
   <EthersProvider>...</EthersProvider>
@@ -49,13 +49,13 @@ Add Linting back to package.json
 ### [npm]
 
 ```sh
-npm install @rapid/ethers-providers
+npm install ethers-providers
 ```
 
 ### [yarn][]
 
 ```sh
-yarn add @rapid/ethers-providers
+yarn add ethers-providers
 ```
 
 ## Getting Started
@@ -151,13 +151,13 @@ It is possible to generate a burner wallet that can be utilized in the absence o
 The following action creator will generate a wallet with the set provider(defaulting the JSON if none). It will set the wallet and address property of the ethers state object.
 
 ```js
-ethers.generateWallet()
+ethers.generateWallet();
 // script
 ```
 
 ```js
 import React from 'react';
-import { withEthers } from 'ethers-react-system';
+import { withEthers } from 'ethers-provider';
 
 class Home extends React.Component {
   constructor(props) {
@@ -168,7 +168,7 @@ class Home extends React.Component {
 
   render() {
     const { ethers } = this.props;
-    return <h1>The address is {ethers.address}</h1>
+    return <h1>The address is {ethers.address}</h1>;
   }
 }
 
@@ -176,21 +176,32 @@ export default withEthers(Home);
 // script
 ```
 
-## Sign Transaction
+## Send Transaction
 
-Insert documentation for sending transactions
+The ether object contains a sendTransaction function that can be used to interfact with a smart contract. The contractID and functionName to interfact with must be provided as well as an array of the parameters of the given function.
+
+```js
+ethers.sendTransaction(contractID, functionName, params);
+//script
+```
+
+The action creator will sign and send the transaction to the network currently connected to.
+
+### <p style="color:orange">Warning</p>
+
+Presently there are **known** issues with error handling with send transactions. This error causes transactions to fail silently. Until the issue is solved directly utilize the initiated contracts to send transactions.
 
 ## Sign Message
 
-Insert documentation for signing messages
+Message Signing Functionality WIP. Once the fucntionality is implemented and tested the documentation will be added.
 
 ## Sign Typed Message
 
-Insert documentation for signing typed messages (ERC712)
+Typed Message Signing (ERC712) Functionality WIP. Once the fucntionality is implemented and tested the documentation will be added.
 
 ## Message Decryption and Encryption
 
-Insert documentation for encrypting and decrypting messages
+Message Decryption/Encryption WIP. Once the fucntionality is implemented and tested the documentation will be added.
 
 ## Contributors
 
