@@ -1,7 +1,7 @@
 {
   "name": "3box-react-system",
   "description": "Craft Delightful 3Box Experiences",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha",
   "author": "Kames <info@kamescg.com> (https://www.kamescg.com)",
   "homepage": "https://github.com/kamescg/react-3box-react-system",
   "license": "MIT",
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "3box": "^1.10.10",
-    "3box-react-state": "^0.0.1",
+    "3box-react-state": "^0.0.1-alpha",
     "buffer": "^5.4.3",
     "ethereum-blockies": "^0.1.1",
     "ethereum-blockies-base64": "^1.0.2",

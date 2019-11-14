@@ -1,7 +1,7 @@
 {
   "name": "3box-react-state",
   "description": "3Box Browser State & Effect Management Context",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha",
   "author": "Kames <info@kamescg.com> (https://www.kamescg.com)",
   "homepage": "https://github.com/kamescg/3box-react-context",
   "main": "dist/index.js",
@@ -21,10 +21,10 @@
     "nyc": "cross-env NODE_ENV=test nyc ava"
   },
   "peerDependencies": {
-    "react-portal-system": "^1.0.0",
     "@kames/ethers-state": "^1.0.0",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "react-portal-system": "^1.0.0"
   },
   "dependencies": {
     "3box": "^1.10.10",

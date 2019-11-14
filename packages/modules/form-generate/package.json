@@ -1,7 +1,7 @@
 {
   "name": "@horizin/form-generate",
   "description": "Generate stlyed forms from structured JSON.",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha",
   "author": "Kames <info@kamescg.com> (https://www.kamescg.com)",
   "homepage": "https://github.com/kamescg/form-generate",
   "license": "MIT",
