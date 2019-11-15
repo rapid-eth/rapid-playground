@@ -37,7 +37,7 @@ Add Linting back to package.json
 - [Initialize Contracts](#initializing-contracts)
 - [Wallet Generation](#wallet-generation)
 - [Deploy Contracts](#deploy-contracts)
-- [Sign Transaction](#send-transaction)
+- [Send Transaction](#send-transaction)
 - [Sign Message](#sign-message)
 - [Sign Typed Message](#sign-typed-message)
 - [Message Decryption and Encryption](#message-decryption-and-encryption)
