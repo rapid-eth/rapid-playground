@@ -1,7 +1,7 @@
 {
   "name": "ethers-react-system",
   "description": "Ethers Interface & Effects Management System",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha",
   "author": "Kames <info@kamescg.com> (https://www.kamescg.com)",
   "homepage": "https://github.com/kamescg/ethers-react-system",
   "main": "dist/index.js",

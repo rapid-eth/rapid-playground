@@ -1,7 +1,7 @@
 {
   "name": "@horizin/ui-compose",
   "description": "Minimal React Component Render Library",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha",
   "author": "Kames <info@kamescg.com> (https://www.kamescg.com)",
   "homepage": "https://github.com/kamescg/ui-compose",
   "license": "MIT",

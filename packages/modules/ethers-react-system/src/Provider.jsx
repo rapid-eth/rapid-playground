@@ -1,87 +1,41 @@
-
-import React, { useContext, useReducer, useEffect } from "react";
-import Context from "./Context";
-import reducerActions from "./reducer";
-import ProviderEffects from "./effects";
-import { hashCode } from "./utilities";
-
-const Provider = ({ children, ...props }) => {
-  const initialState = useContext(Context)
-  const [state, dispatch] = useReducer(reducerActions, initialState);
-  ProviderEffects(useEffect, state, dispatch)
-
+import React, { useContext, useReducer, useEffect } from 'react';
+import Context from './Context';
+import reducers from './reducer';
+import ProviderEffects from './effects';
+import { enhanceActions } from './middleware/actions';
+import { initialize } from './middleware/initialize';
+/**
+ * @summary A React Context Provider that provides a simple interface to most ethers.js functionality.
+ * It allows for easy contract management and querying/transactions of the smart contracts.
+ * @param {Array<React.Component>} children
+ * @param {Array} contracts
+ * @param {String} provider
+ * @todo Add hooks to query smart contracts
+ * @todo Add dispatch async/await
+ * @todo Add better error handling
+ * @todo Add option to initialize a contract not deployed
+ */
+const Provider = ({ children, contracts, provider }) => {
+  const initialState = useContext(Context);
+  const [state, dispatch] = useReducer(
+    reducers,
+    initialState,
+    initialize(contracts, provider)
+  );
+  const actions = enhanceActions(state, dispatch);
+  ProviderEffects(useEffect, state, dispatch);
   return (
-    <Context.Provider value={{
-      ...state,
-      dispatch: dispatch,
-      enable: () => window.ethereum.enable(),
-      setProvider: ({ provider }) => dispatch({
-        type: 'SET_PROVIDER',
-        payload: provider,
-      }),
-      setProviderStatus: ({ provider }) => dispatch({
-        type: 'SET_PROVIDER_STATUS',
-        payload: provider,
-      }),
-
-      /* --- Library ---- */
-      loadContractIntoLibrary: ({ abi, contractName }) => dispatch({
-        type: 'LOAD_CONTRACT_INTO_LIBRARY_REQUEST',
-        payload: {
-          abi,
-          contractName
-        },
-      }),
-
-      /* --- Initialize ---- */
-      initContract: ({ abi, address, contractType, delta }) => dispatch({
-        type: 'INIT_CONTRACT_REQUEST',
-        payload: {
-          abi,
-          address,
-          contractType
-        },
-        delta: delta || address
-      }),
-      initContractFromLibrary: ({ address, contractName }) => dispatch({
-        type: 'INIT_CONTRACT_FROM_LIBRARY_REQUEST',
-        payload: {
-          address,
-          contractName,
-        }
-      }),
-      deployContract: ({ contract, delta, values }) => dispatch({
-        type: 'DEPLOY_CONTRACT_REQUEST',
-        payload: {
-          contract,
-          values
-        },
-        delta: delta || contract && contract.contractName
-      }),
-      deployContractFromBytecode: (abi, bytecode, delta) => dispatch({
-        type: 'DEPLOY_CONTRACT_FROM_BYTECODE_REQUEST',
-        input: bytecode,
-        delta: delta || hashCode(abi)
-      }),
-      signMessageTyped: ({ message, delta }) => dispatch({
-        type: 'SIGN_TYPED_MESSAGE_REQUEST',
-        payload: message,
-        id: delta || hashCode(message.toString())
-      }),
-      signMessage: ({ message, delta }) => dispatch({
-        type: 'SIGN_MESSAGE_REQUEST',
-        payload: message,
-        id: delta || hashCode(message)
-      }),
-      sendTransaction: (transaction, delta) => dispatch({
-        type: 'SIGN_TRANSACTION_REQUEST',
-        input: transaction,
-        delta
-      })
-    }}>
+    <Context.Provider
+      value={{
+        ...state,
+        dispatch,
+        enable: window.ethereum ? window.ethereum.enable : state.enable,
+        ...actions
+      }}
+    >
       {children}
     </Context.Provider>
   );
-}
+};
 
 export default Provider;

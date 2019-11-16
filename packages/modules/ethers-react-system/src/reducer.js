@@ -1,49 +1,53 @@
-import dot from 'dot-prop-immutable-chain'
-import { hashCode } from './utilities'
+import dot from 'dot-prop-immutable-chain';
+import { hashCode } from './utilities';
+import {
+  SET_PROVIDER,
+  SET_PROVIDER_STATUS,
+  SIGN_TYPED_MESSAGE_REQUEST,
+  SIGN_MESSAGE_REQUEST,
+  INIT_CONTRACT_REQUEST,
+  DEPLOY_CONTRACT_REQUEST,
+  DEPLOY_CONTRACT_FROM_BYTECODE_REQUEST,
+  LOAD_CONTRACT_INTO_LIBRARY_REQUEST,
+  SET_WALLET,
+  SIGN_TRANSACTION_REQUEST
+} from './actions/types';
 
 const reducerActions = (state, action) => {
-  let filtered
-  const { input, delta, id, payload, type } = action
+  let filtered;
+  const { input, delta, id, payload, type } = action;
   switch (action.type) {
-    case 'SET_PROVIDER':
+    case SET_PROVIDER:
       return {
         ...state,
         provider: payload
-      }
-    case 'SET_PROVIDER_STATUS':
+      };
+    case SET_PROVIDER_STATUS:
       return {
         ...state,
         providerStatus: payload
-      }
+      };
     case 'SET_ADDRESS':
       return {
         ...state,
         address: input
-      }
-    case 'SET_ADDRESS_FAILURE':
+      };
+    case SET_WALLET:
       return {
         ...state,
-        address: input
-      }
-    case 'SET_WALLET_SUCCESS':
-        return {
-          ...state,
-          wallet: payload
-        }
-    case 'SIGN_TYPED_MESSAGE_REQUEST':
+        address: payload.address,
+        wallet: payload.wallet,
+        contracts: payload.contracts
+      };
+    case SIGN_TRANSACTION_REQUEST:
       return {
         ...state,
-        store: {
-          ...state.store,
-          messages: [
-            ...state.store.messages,
-            {
-              ...action,
-            }
-          ]
+        signatures: {
+          ...state.signatures,
+          [id]: payload
         }
-      }
-    case 'SIGN_MESSAGE_REQUEST':
+      };
+    case SIGN_TYPED_MESSAGE_REQUEST:
       return {
         ...state,
         store: {
@@ -51,13 +55,26 @@ const reducerActions = (state, action) => {
           messages: [
             ...state.store.messages,
             {
-              ...action,
+              ...action
             }
           ]
         }
-      }
+      };
+    case SIGN_MESSAGE_REQUEST:
+      return {
+        ...state,
+        store: {
+          ...state.store,
+          messages: [
+            ...state.store.messages,
+            {
+              ...action
+            }
+          ]
+        }
+      };
     case 'SIGN_MESSAGE_SUCCESS':
-      filtered = state.store.messages.filter( msg => msg.id !== action.id )
+      filtered = state.store.messages.filter(msg => msg.id !== action.id);
       return {
         ...state,
         store: {
@@ -70,9 +87,9 @@ const reducerActions = (state, action) => {
             ...action
           }
         }
-      }
+      };
     case 'SIGN_MESSAGE_FAILURE':
-      filtered = state.store.messages.filter( msg => msg.id !== action.id )
+      filtered = state.store.messages.filter(msg => msg.id !== action.id);
       return {
         ...state,
         store: {
@@ -87,132 +104,119 @@ const reducerActions = (state, action) => {
             status: false
           }
         }
-      }
+      };
 
-      /* ----------------------- */
-      /* Contract Loading     */
-      /* ----------------------- */
-      case 'LOAD_CONTRACT_INTO_LIBRARY_REQUEST':
-        return dot(state).set(`store.library`, [ ...state.store.library, action]).value()
-        
-      case 'LOAD_CONTRACT_INTO_LIBRARY_SUCCESS':
-        return dot(state).set(`library.${action.payload.contractName}`, action.payload).value()
-      
-      case 'LOAD_CONTRACT_INTO_LIBRARY_FAILURE':
-        return dot(state).set(`store.library`, []).value() 
-      /* ----------------------- */
-      /* Contract Loading     */
-      /* ----------------------- */
-      case 'LOAD_CONTRACT_REQUEST':
-          console.log(action, 'init contract')
-        return dot(state).set(`store.library`, [ ...state.store.contracts, action]).value()
-        
-      case 'LOAD_CONTRACT_SUCCESS':
-        return dot(state).set(`contracts.${action.payload.contractName}`, action.payload).value()
-      
-      case 'LOAD_CONTRACT_FAILURE':
-        return dot(state).set(`store.contracts`, []).value() 
-      /* ----------------------- */
-      /* Contract Initialize     */
-      /* ----------------------- */
-        case 'INIT_CONTRACT_REQUEST':
-          console.log(action, 'init contract')
-          return {
-            ...state,
-            store: {
-              ...state.store,
-              contracts: [
-                ...state.store.contracts,
-                {
-                  payload,
-                  type,
-                  id: delta || hashCode(payload),
-                  delta: delta || hashCode(payload),
-                }
-              ]
-            }
+    /* ----------------------- */
+    /* Contract Loading     */
+    /* ----------------------- */
+    case LOAD_CONTRACT_INTO_LIBRARY_REQUEST:
+      return dot(state)
+        .set(`store.library`, [...state.store.library, action])
+        .value();
+
+    case 'LOAD_CONTRACT_INTO_LIBRARY_SUCCESS':
+      return dot(state)
+        .set(`library.${action.payload.contractName}`, action.payload)
+        .value();
+
+    case 'LOAD_CONTRACT_INTO_LIBRARY_FAILURE':
+      return dot(state)
+        .set(`store.library`, [])
+        .value();
+    /* ----------------------- */
+    /* Contract Loading     */
+    /* ----------------------- */
+    case 'LOAD_CONTRACT_REQUEST':
+      console.log(action, 'init contract');
+      return dot(state)
+        .set(`store.library`, [...state.store.contracts, action])
+        .value();
+
+    case 'LOAD_CONTRACT_SUCCESS':
+      return dot(state)
+        .set(`contracts.${action.payload.contractName}`, action.payload)
+        .value();
+
+    case 'LOAD_CONTRACT_FAILURE':
+      return dot(state)
+        .set(`store.contracts`, [])
+        .value();
+    /* ----------------------- */
+    /* Contract Initialize     */
+    /* ----------------------- */
+
+    case INIT_CONTRACT_REQUEST:
+      const { address, contract } = payload;
+      return {
+        ...state,
+        store: {
+          ...state.store,
+          contracts: []
+        },
+        contracts: {
+          ...state.contracts,
+          [id]: {
+            id,
+            address,
+            ...contract
           }
-
-        case 'INIT_CONTRACT_SUCCESS':
-          return {
-            ...state,
-            store: {
-              ...state.store,
-              contracts: []
-            },
-            contracts: {
-            ...state.contracts,
-              [id]:{
-                id,
-                contractType: action.contractType,
-                ...payload,
-                }
-              }
         }
+      };
 
-        case 'INIT_CONTRACT_FAILURE':
-          return {
-            ...state,
-            store: {
-              ...state.store,
-              contracts: []
+    /* ----------------------- */
+    /* Contract Deployment     */
+    /* ----------------------- */
+    case DEPLOY_CONTRACT_REQUEST:
+      return {
+        ...state,
+        store: {
+          ...state.store,
+          deploy: [
+            ...state.store.deploy,
+            {
+              payload,
+              type,
+              id: delta || hashCode(payload),
+              delta: delta || hashCode(payload)
             }
+          ]
+        }
+      };
+    case DEPLOY_CONTRACT_FROM_BYTECODE_REQUEST:
+      return {
+        ...state,
+        store: {
+          ...state.store,
+          deploy: [
+            ...state.store.deploy,
+            {
+              payload,
+              id: delta || hashCode(input)
+            }
+          ]
+        }
+      };
+    case 'DEPLOY_CONTRACT_SUCCESS':
+      filtered = state.store.messages.filter(msg => msg.id !== input.id);
+      return {
+        ...state,
+        store: {
+          ...state.store,
+          deploy: filtered
+        },
+        deployed: [
+          ...state.deployed,
+          {
+            ...payload,
+            type: 'contractDeployed',
+            status: true
           }
-
-      /* ----------------------- */
-      /* Contract Deployment     */
-      /* ----------------------- */
-      case 'DEPLOY_CONTRACT_REQUEST':
-          return {
-            ...state,
-            store: {
-              ...state.store,
-              deploy: [
-                ...state.store.deploy,
-                {
-                  payload,
-                  type,
-                  id: delta || hashCode(payload),
-                  delta: delta || hashCode(payload),
-                }
-              ]
-            }
-          }
-        case 'DEPLOY_CONTRACT_FROM_BYTECODE_REQUEST':
-          return {
-            ...state,
-            store: {
-              ...state.store,
-              deploy: [
-                ...state.store.deploy,
-                {
-                  payload,
-                  id: delta || hashCode(input),
-                }
-              ]
-            }
-          }
-        case 'DEPLOY_CONTRACT_SUCCESS':
-            filtered = state.store.messages.filter( msg => msg.id !== input.id )
-            return {
-              ...state,
-              store: {
-                ...state.store,
-                deploy: filtered
-              },
-              deployed: [
-                ...state.deployed,
-                {
-                  ...payload,
-                  type: 'contractDeployed',
-                  status: true
-                }
-              ]
-            }
+        ]
+      };
 
     default:
       throw new Error(`No Reducer Type Set: ${action.type}`);
   }
-}
+};
 
-export default reducerActions
+export default reducerActions;

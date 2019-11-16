@@ -1,7 +1,7 @@
 {
   "name": "react-portal-system",
   "description": "React Portal System",
-  "version": "1.0.0",
+  "version": "0.0.1-alpha",
   "author": "Kames <info@kamescg.com> (https://www.kamescg.com)",
   "keywords": [
     "react-context-portal"

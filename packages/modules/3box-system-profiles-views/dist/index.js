@@ -1,6 +1,6 @@
 "use strict";
 
-var _interopRequireDefault = require("/Users/admin/Documents/GitHub/@browser/playground/node_modules/babel-preset-react-app/node_modules/@babel/runtime/helpers/interopRequireDefault");
+var _interopRequireDefault = require("/home/luis/consensys/rapid-playground/node_modules/babel-preset-react-app/node_modules/@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true

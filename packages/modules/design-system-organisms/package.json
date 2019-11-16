@@ -1,6 +1,6 @@
 {
   "name": "@horizin/design-system-organisms",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha",
   "main": "dist/index.js",
   "main:src": "src/index.js",
   "scripts": {

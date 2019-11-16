@@ -1,7 +1,7 @@
 {
   "name": "@rapid/smart-contract-token-fungible",
   "description": "Fungible Token",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha",
   "author": "Kames <info@kamescg.com> (https://www.kamescg.com)",
   "homepage": "https://github.com/rapid-eth/smart-contract-token-fungible",
   "main": "dist/index.js",
