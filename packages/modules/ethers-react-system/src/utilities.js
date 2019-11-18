@@ -162,8 +162,8 @@ export const getContract = (contract, providerName, optionalParams = {}) => {
   } else {
     const contractID = `${contractName}Factory`;
     // const wallet = provider.getSigner();
-    const factory = new ethers.ContractFactory(abi, bytecode);
-    return [factory, address, contractID];
+    // const factory = new ethers.ContractFactory(abi, bytecode);
+    return [contract, address, contractID];
   }
 };
 
