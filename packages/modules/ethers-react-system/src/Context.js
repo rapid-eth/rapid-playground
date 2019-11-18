@@ -40,13 +40,6 @@ import { ethers } from 'ethers';
  */
 const Context = createContext({
   instance: ethers,
-  store: {
-    contracts: [],
-    deploy: [],
-    library: [],
-    transactions: [],
-    wallets: []
-  },
   contracts: {},
   library: {},
   deployed: [],
@@ -57,7 +50,6 @@ const Context = createContext({
   enable: () => {},
   loadContractIntoLibrary: () => {},
   initContract: () => {},
-  initContractFromLibrary: () => {},
   deployContract: () => {},
   deployContractFromBytecode: () => {},
   setProvider: () => {},

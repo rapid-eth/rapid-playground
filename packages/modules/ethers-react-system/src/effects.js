@@ -90,11 +90,11 @@ const effects = (callUseEffect, state, dispatch) => {
     if (
       state.provider &&
       state.wallet &&
-      state.store.messages &&
-      state.store.messages.length > 0
+      state.messages &&
+      state.messages.length > 0
     ) {
       const runEffect = async () => {
-        const messageRequest = state.store.messages[0];
+        const messageRequest = state.messages[0];
         try {
           let signature;
           switch (messageRequest.type) {
@@ -131,50 +131,50 @@ const effects = (callUseEffect, state, dispatch) => {
       };
       runEffect();
     }
-  }, [state.store.messages, state.provider, state.wallet]);
+  }, [state.messages, state.provider, state.wallet]);
 
-  /**
-   * @function DeployContract
-   * @description SIGN_MESSAGE_REQUEST
-   */
-  callUseEffect(() => {
-    if (state.store.deploy && state.store.deploy.length > 0) {
-      const runEffect = async () => {
-        let contract, deployed, transaction;
-        const request = state.store.deploy[0];
-        const { payload } = request;
-        try {
-          const wallet = state.wallet;
-          if (wallet) {
-            contract = new ethers.ContractFactory(
-              payload.contract.abi,
-              payload.contract.bytecode,
-              wallet
-            );
-            transaction = contract.getDeployTransaction(...payload.values);
-            deployed = await wallet.sendTransaction(transaction);
-            dispatch({
-              type: 'DEPLOY_CONTRACT_SUCCESS',
-              id: request.id,
-              delta: request.id,
-              payload: deployed
-            });
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      runEffect();
-    }
-  }, [state.store.deploy]);
+  // /**
+  //  * @function DeployContract
+  //  * @description SIGN_MESSAGE_REQUEST
+  //  */
+  // callUseEffect(() => {
+  //   if (state.store.deploy && state.store.deploy.length > 0) {
+  //     const runEffect = async () => {
+  //       let contract, deployed, transaction;
+  //       const request = state.store.deploy[0];
+  //       const { payload } = request;
+  //       try {
+  //         const wallet = state.wallet;
+  //         if (wallet) {
+  //           contract = new ethers.ContractFactory(
+  //             payload.contract.abi,
+  //             payload.contract.bytecode,
+  //             wallet
+  //           );
+  //           transaction = contract.getDeployTransaction(...payload.values);
+  //           deployed = await wallet.sendTransaction(transaction);
+  //           dispatch({
+  //             type: 'DEPLOY_CONTRACT_SUCCESS',
+  //             id: request.id,
+  //             delta: request.id,
+  //             payload: deployed
+  //           });
+  //         }
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     };
+  //     runEffect();
+  //   }
+  // }, [state.store.deploy]);
 
   /**
    * @function LoadContract
    * @description LOAD_CONTRACT_INTO_LIBRARY_REQUEST
    */
   callUseEffect(() => {
-    if (state.store.library && state.store.library.length > 0) {
-      const request = state.store.library[0];
+    if (state.library && state.library.length > 0) {
+      const request = state.library[0];
 
       if (isAddress(request.address)) {
         dispatch({
@@ -190,7 +190,7 @@ const effects = (callUseEffect, state, dispatch) => {
         });
       }
     }
-  }, [state.wallet, state.store.contracts]);
+  }, [state.wallet, state.contracts]);
 };
 
 export default effects;

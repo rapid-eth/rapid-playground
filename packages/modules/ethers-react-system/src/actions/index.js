@@ -82,18 +82,6 @@ export const initContract = (state, dispatch) => (Contract, address) => {
   }
 };
 
-export const initContractFromLibrary = (state, dispatch) => ({
-  address,
-  contractName
-}) =>
-  dispatch({
-    type: 'INIT_CONTRACT_FROM_LIBRARY_REQUEST',
-    payload: {
-      address,
-      contractName
-    }
-  });
-
 export const deployContract = (state, dispatch) => ({
   contract,
   delta,
