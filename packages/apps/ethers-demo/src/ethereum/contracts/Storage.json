@@ -72,24 +72,14 @@
   "ast": {
     "absolutePath": "/home/luis/consensys/rapid-playground/packages/apps/ethers-demo/contracts/Storage.sol",
     "exportedSymbols": {
-      "Storage": [
-        111
-      ]
+      "Storage": [111]
     },
     "id": 112,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 58,
-        "literals": [
-          "solidity",
-          ">=",
-          "0.4",
-          ".21",
-          "<",
-          "0.6",
-          ".0"
-        ],
+        "literals": ["solidity", ">=", "0.4", ".21", "<", "0.6", ".0"],
         "nodeType": "PragmaDirective",
         "src": "0:32:1"
       },
@@ -100,9 +90,7 @@
         "documentation": null,
         "fullyImplemented": true,
         "id": 111,
-        "linearizedBaseContracts": [
-          111
-        ],
+        "linearizedBaseContracts": [111],
         "name": "Storage",
         "nodeType": "ContractDefinition",
         "nodes": [
@@ -689,24 +677,14 @@
   "legacyAST": {
     "absolutePath": "/home/luis/consensys/rapid-playground/packages/apps/ethers-demo/contracts/Storage.sol",
     "exportedSymbols": {
-      "Storage": [
-        111
-      ]
+      "Storage": [111]
     },
     "id": 112,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 58,
-        "literals": [
-          "solidity",
-          ">=",
-          "0.4",
-          ".21",
-          "<",
-          "0.6",
-          ".0"
-        ],
+        "literals": ["solidity", ">=", "0.4", ".21", "<", "0.6", ".0"],
         "nodeType": "PragmaDirective",
         "src": "0:32:1"
       },
@@ -717,9 +695,7 @@
         "documentation": null,
         "fullyImplemented": true,
         "id": 111,
-        "linearizedBaseContracts": [
-          111
-        ],
+        "linearizedBaseContracts": [111],
         "name": "Storage",
         "nodeType": "ContractDefinition",
         "nodes": [
@@ -1306,28 +1282,6 @@
   "compiler": {
     "name": "solc",
     "version": "0.5.8+commit.23d335f2.Emscripten.clang"
-  },
-  "networks": {
-    "1574083090525": {
-      "events": {
-        "0x2fd81fd19d3c5c4b396dd13f451dafc8bcac1b3094c49c5fa90e68456323f0e3": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "name": "number",
-              "type": "uint256"
-            }
-          ],
-          "name": "NumberChanged",
-          "type": "event",
-          "signature": "0x2fd81fd19d3c5c4b396dd13f451dafc8bcac1b3094c49c5fa90e68456323f0e3"
-        }
-      },
-      "links": {},
-      "address": "0xa24db47fEb52ba65BA9a1956597E0140B52ee8b0",
-      "transactionHash": "0x9cfe2ed8d8da348e8de57a503ebdbac0dbec8a247af4e6e624213ca20aa59521"
-    }
   },
   "schemaVersion": "3.0.16",
   "updatedAt": "2019-11-18T14:00:14.163Z",

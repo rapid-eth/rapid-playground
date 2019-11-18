@@ -161,14 +161,14 @@ export const getContract = (contract, providerName, optionalParams = {}) => {
     return [deployedContract, address, contractID];
   } else {
     const contractID = `${contractName}Factory`;
-    // const wallet = provider.getSigner();
-    // const factory = new ethers.ContractFactory(abi, bytecode);
-    return [contract, address, contractID];
+    const wallet = provider.getSigner();
+    const factory = new ethers.ContractFactory(abi, bytecode, wallet);
+    return [factory, address, contractID];
   }
 };
 
 /**
- *
+ * @summary
  * @param {Object} oldContracts
  * @param {ethers.Wallet} wallet
  */
@@ -176,16 +176,28 @@ export const generateNewContracts = (oldContracts, wallet) => {
   let newContracts = {};
   const keys = Object.keys(oldContracts);
   keys.forEach(id => {
+    const current = oldContracts[id];
     const {
       address,
+      bytecode,
       interface: { abi }
-    } = oldContracts[id];
-    const contract = new ethers.Contract(address, abi, wallet);
-    newContracts[id] = {
-      id,
-      address,
-      ...contract
-    };
+    } = current;
+
+    if (id.contains('Factory')) {
+      const factory = new ethers.ContractFactory(abi, bytecode, wallet);
+      newContracts[id] = {
+        id,
+        address,
+        ...factory
+      };
+    } else {
+      const contract = new ethers.Contract(address, abi, wallet);
+      newContracts[id] = {
+        id,
+        address,
+        ...contract
+      };
+    }
   });
 
   return newContracts;

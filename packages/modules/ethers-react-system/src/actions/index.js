@@ -79,7 +79,41 @@ export const initContract = (state, dispatch) => (Contract, givenAddress) => {
   }
 };
 
-export const deployContract = (state, dispatch) => (contractID, params) =>
+/**
+ *
+ * @param {String} contractID
+ * @param {Array} params
+ */
+export const deployContract = (state, dispatch) => async (
+  contractID,
+  params
+) => {
+  const { contracts, wallet } = state;
+
+  if (wallet === undefined) {
+    throw new Error(
+      "Contract cannot be deployed when there's no connected wallet"
+    );
+  }
+  if (contractID === undefined || contractID.length <= 0) {
+    throw new Error(
+      'Invalid contractID passed to deployContract action creator'
+    );
+  }
+
+  if (contractID.contains('Factory') === false) {
+    throw new Error('You can only deploy from contract factories');
+  }
+
+  if (contracts[contractID] === undefined) {
+    throw new Error('No such contract found with id: ', contractID);
+  }
+
+  const { abi, bytecode } = contracts[contractID];
+  const factory = new ethers.ContractFactory(abi, bytecode, wallet);
+  const deployedContract = await factory.deploy(...params);
+  await deployedContract.deployed();
+
   dispatch({
     type: 'DEPLOY_CONTRACT_REQUEST',
     payload: {
@@ -88,7 +122,13 @@ export const deployContract = (state, dispatch) => (contractID, params) =>
     },
     delta: delta || (contract && contract.contractName)
   });
+};
 
+/**
+ *
+ * @param {Object} abi
+ * @param {String} bytecode
+ */
 export const deployContractFromBytecode = (state, dispatch) => (
   abi,
   bytecode,

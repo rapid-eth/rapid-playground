@@ -45,10 +45,7 @@ const effects = (callUseEffect, state, dispatch) => {
           input: address
         });
       } catch (error) {
-        dispatch({
-          type: 'SET_ADDRESS_FAILURE',
-          input: error
-        });
+        throw new Error('An error occured while setting the address', error);
       }
     }
   }, [window.ethereum && window.ethereum.selectedAddress]);
@@ -72,10 +69,10 @@ const effects = (callUseEffect, state, dispatch) => {
             }
           });
         } catch (error) {
-          // dispatch({
-          //   type: 'SET_WALLET_FAILURE',
-          //   payload: error
-          // });
+          throw new Error(
+            'An error occurred while trying to set the wallet: ',
+            error
+          );
         }
       };
       runEffect();
@@ -86,52 +83,52 @@ const effects = (callUseEffect, state, dispatch) => {
    * @function SignMessage
    * @description SIGN_MESSAGE_REQUEST
    */
-  callUseEffect(() => {
-    if (
-      state.provider &&
-      state.wallet &&
-      state.messages &&
-      state.messages.length > 0
-    ) {
-      const runEffect = async () => {
-        const messageRequest = state.messages[0];
-        try {
-          let signature;
-          switch (messageRequest.type) {
-            case 'SIGN_TYPED_MESSAGE_REQUEST':
-              signature = await state.provider.injected.send(
-                'eth_signTypedData',
-                [messageRequest.payload, state.address]
-              );
-              break;
-            default:
-              signature = await state.wallet.signMessage(
-                messageRequest.payload
-              );
-              break;
-          }
-          if (signature) {
-            dispatch({
-              type: 'SIGN_MESSAGE_SUCCESS',
-              id: messageRequest.id,
-              payload: messageRequest.payload,
-              signature
-            });
-          }
-        } catch (error) {
-          console.log(error);
-          dispatch({
-            type: 'SIGN_MESSAGE_FAILURE',
-            input: {
-              id: messageRequest.id,
-              error
-            }
-          });
-        }
-      };
-      runEffect();
-    }
-  }, [state.messages, state.provider, state.wallet]);
+  // callUseEffect(() => {
+  //   if (
+  //     state.provider &&
+  //     state.wallet &&
+  //     state.messages &&
+  //     state.messages.length > 0
+  //   ) {
+  //     const runEffect = async () => {
+  //       const messageRequest = state.messages[0];
+  //       try {
+  //         let signature;
+  //         switch (messageRequest.type) {
+  //           case 'SIGN_TYPED_MESSAGE_REQUEST':
+  //             signature = await state.provider.injected.send(
+  //               'eth_signTypedData',
+  //               [messageRequest.payload, state.address]
+  //             );
+  //             break;
+  //           default:
+  //             signature = await state.wallet.signMessage(
+  //               messageRequest.payload
+  //             );
+  //             break;
+  //         }
+  //         if (signature) {
+  //           dispatch({
+  //             type: 'SIGN_MESSAGE_SUCCESS',
+  //             id: messageRequest.id,
+  //             payload: messageRequest.payload,
+  //             signature
+  //           });
+  //         }
+  //       } catch (error) {
+  //         console.log(error);
+  //         dispatch({
+  //           type: 'SIGN_MESSAGE_FAILURE',
+  //           input: {
+  //             id: messageRequest.id,
+  //             error
+  //           }
+  //         });
+  //       }
+  //     };
+  //     runEffect();
+  //   }
+  // }, [state.messages, state.provider, state.wallet]);
 
   // /**
   //  * @function DeployContract
@@ -172,25 +169,25 @@ const effects = (callUseEffect, state, dispatch) => {
    * @function LoadContract
    * @description LOAD_CONTRACT_INTO_LIBRARY_REQUEST
    */
-  callUseEffect(() => {
-    if (state.library && state.library.length > 0) {
-      const request = state.library[0];
+  // callUseEffect(() => {
+  //   if (state.library && state.library.length > 0) {
+  //     const request = state.library[0];
 
-      if (isAddress(request.address)) {
-        dispatch({
-          type: 'LOAD_CONTRACT_INTO_LIBRARY_SUCCESS',
-          id: request.id,
-          payload: request.payload
-        });
-      } else {
-        dispatch({
-          type: 'LOAD_CONTRACT_INTO_LIBRARY_FAILURE',
-          id: request.id,
-          payload: 'Invalid smart contract address.'
-        });
-      }
-    }
-  }, [state.wallet, state.contracts]);
+  //     if (isAddress(request.address)) {
+  //       dispatch({
+  //         type: 'LOAD_CONTRACT_INTO_LIBRARY_SUCCESS',
+  //         id: request.id,
+  //         payload: request.payload
+  //       });
+  //     } else {
+  //       dispatch({
+  //         type: 'LOAD_CONTRACT_INTO_LIBRARY_FAILURE',
+  //         id: request.id,
+  //         payload: 'Invalid smart contract address.'
+  //       });
+  //     }
+  //   }
+  // }, [state.wallet, state.contracts]);
 };
 
 export default effects;
