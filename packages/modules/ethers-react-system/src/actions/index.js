@@ -82,11 +82,7 @@ export const initContract = (state, dispatch) => (Contract, givenAddress) => {
   }
 };
 
-export const deployContract = (state, dispatch) => ({
-  contract,
-  delta,
-  values
-}) =>
+export const deployContract = (state, dispatch) => (contractID, params) =>
   dispatch({
     type: 'DEPLOY_CONTRACT_REQUEST',
     payload: {
