@@ -70,8 +70,7 @@ const effects = (callUseEffect, state, dispatch) => {
           });
         } catch (error) {
           throw new Error(
-            'An error occurred while trying to set the wallet: ',
-            error
+            `An error occurred while trying to set the wallet: ${error}`
           );
         }
       };

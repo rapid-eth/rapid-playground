@@ -106,21 +106,20 @@ export const deployContract = (state, dispatch) => async (
   }
 
   if (contracts[contractID] === undefined) {
-    throw new Error('No such contract found with id: ', contractID);
+    throw new Error('No such contract factory found with id: ', contractID);
   }
 
-  const { abi, bytecode } = contracts[contractID];
-  const factory = new ethers.ContractFactory(abi, bytecode, wallet);
+  const factory = contracts[contractID];
   const deployedContract = await factory.deploy(...params);
   await deployedContract.deployed();
 
   dispatch({
     type: 'DEPLOY_CONTRACT_REQUEST',
+    id: contractID,
     payload: {
-      contract,
-      values
-    },
-    delta: delta || (contract && contract.contractName)
+      contract: deployedContract,
+      ...params
+    }
   });
 };
 

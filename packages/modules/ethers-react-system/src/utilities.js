@@ -183,7 +183,7 @@ export const generateNewContracts = (oldContracts, wallet) => {
       interface: { abi }
     } = current;
 
-    if (id.contains('Factory')) {
+    if (id.includes('Factory')) {
       const factory = new ethers.ContractFactory(abi, bytecode, wallet);
       newContracts[id] = {
         id,
