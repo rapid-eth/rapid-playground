@@ -1,9 +1,4 @@
-import {
-  hashCode,
-  generateNewContracts,
-  networkRouting,
-  getContract
-} from '../utilities';
+import { hashCode, generateNewContracts, getContract } from '../utilities';
 import { ethers } from 'ethers';
 import {
   INIT_CONTRACT,
@@ -48,6 +43,7 @@ export const loadContractIntoLibrary = (state, dispatch) => ({
  * @summary This function will take the built smart contracts(and a optional deployed address param)
  * and initialize the smart contract with the deployed version.
  * By default it will pull the latest deployed address from the JSON file.
+ * If the contract has not been deployed the address will be the empty string and the contract in state will be the given Contract parameter
  *
  * @param {Object} Contract The smart contract build object. Assumed to follow the general structure resulting
  * from compiling via the truffle(ie it has the abi, networks used, etc)
@@ -56,6 +52,7 @@ export const loadContractIntoLibrary = (state, dispatch) => ({
  * In the event you need to initialize with a contract that is not the latest deployed.
  *
  * TODO @todo add extensive error checking
+ * TODO @todo switch optional params to object method
  */
 export const initContract = (state, dispatch) => (Contract, givenAddress) => {
   const { wallet, defaultProvider } = state;
