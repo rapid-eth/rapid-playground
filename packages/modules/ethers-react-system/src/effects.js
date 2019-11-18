@@ -45,7 +45,7 @@ const effects = (callUseEffect, state, dispatch) => {
           input: address
         });
       } catch (error) {
-        throw new Error('An error occured while setting the address', error);
+        throw new Error(`An error occured while setting the address: ${error}`);
       }
     }
   }, [window.ethereum && window.ethereum.selectedAddress]);

@@ -41,12 +41,12 @@ const TitleNumber = ({ethers}) => {
 				>
 					Set the number to 10
 				</button>
-				<button
-					onClick={() => {
-						ethers.signMessage('HelloWorld', 'hw');
-					}}
-				>
+				<button onClick={() => ethers.signMessage('HelloWorld', 'hw')}>
 					Sign 'Hello World' message
+				</button>
+
+				<button onClick={() => ethers.deployContract('StorageFactory')}>
+					Deploy Storage Contract
 				</button>
 			</>
 		</Site>

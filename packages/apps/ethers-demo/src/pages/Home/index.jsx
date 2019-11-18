@@ -8,7 +8,7 @@ class Home extends React.Component {
   render() {
     const {ethers} = this.props;
     console.log(ethers);
-    return <h1>Hello</h1>; //<TitleNumber ethers={ethers}></TitleNumber>;
+    return <TitleNumber ethers={ethers}></TitleNumber>;
   }
 }
 
