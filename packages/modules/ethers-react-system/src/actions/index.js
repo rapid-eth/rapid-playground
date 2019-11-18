@@ -125,9 +125,11 @@ export const signMessageTyped = (state, dispatch) => ({ message, delta }) =>
   });
 
 /**
- *
- * @param {String} message
- * @param {String} messsageID
+ * @summary The action creator will receive a message
+ * and a optional messageID that will be utilized as the reference in the 'messages' state object.
+ * It will sign the given message and then dispatch the action with the message as the payload
+ * @param {String} message message to be signed
+ * @param {String} messsageID optional ID for the message (to be referenced in the state object)
  */
 export const signMessage = (state, dispatch) => async (message, messageID) => {
   const { wallet } = state;
