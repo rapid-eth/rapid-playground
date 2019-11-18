@@ -19,7 +19,6 @@ export const DEPLOY_CONTRACT_FROM_BYTECODE_REQUEST =
 
 // * Sign actions
 export const SIGN_TYPED_MESSAGE_REQUEST = 'SIGN_TYPED_MESSAGE_REQUEST';
-export const SIGN_MESSAGE_REQUEST = 'SIGN_MESSAGE_REQUEST';
 export const SIGN_MESSAGE = 'SIGN_MESSAGE';
 // ! NOTE: No reducer associated with action
 export const SIGN_TRANSACTION_REQUEST = 'SIGN_TRANSACTION_REQUEST';
