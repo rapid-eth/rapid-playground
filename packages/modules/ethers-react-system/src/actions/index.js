@@ -8,7 +8,8 @@ import { ethers } from 'ethers';
 import {
   INIT_CONTRACT_REQUEST,
   SET_WALLET,
-  SIGN_TRANSACTION_REQUEST
+  SIGN_TRANSACTION_REQUEST,
+  SIGN_MESSAGE
 } from './types';
 /**
  *
@@ -123,12 +124,25 @@ export const signMessageTyped = (state, dispatch) => ({ message, delta }) =>
     id: delta || hashCode(message.toString())
   });
 
-export const signMessage = (state, dispatch) => ({ message, delta }) =>
+/**
+ *
+ * @param {String} message
+ * @param {String} messsageID
+ */
+export const signMessage = (state, dispatch) => async (message, messageID) => {
+  const { wallet } = state;
+  if (wallet === undefined) {
+    return;
+  }
+  //the basic signed message. It will be necessary to utilize the 'splitSignature' function to use it with solidity.
+  //https://docs.ethers.io/ethers.js/html/cookbook-signing.html
+  const flatSig = await wallet.signMessage(message);
   dispatch({
-    type: 'SIGN_MESSAGE_REQUEST',
-    payload: message,
-    id: delta || hashCode(message)
+    type: SIGN_MESSAGE,
+    payload: flatSig,
+    id: messageID || hashCode(message)
   });
+};
 
 /**
  *

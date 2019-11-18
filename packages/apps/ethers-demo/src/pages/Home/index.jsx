@@ -9,11 +9,10 @@ import TitleNumber from './TitleNumber.js';
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    const {ethers} = props;
-    // ethers.generateWallet();
   }
   render() {
     const {ethers} = this.props;
+    console.log(ethers);
     return <TitleNumber ethers={ethers}></TitleNumber>;
   }
 }

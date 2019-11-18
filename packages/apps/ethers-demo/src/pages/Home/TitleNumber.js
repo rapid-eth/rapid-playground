@@ -41,6 +41,13 @@ const TitleNumber = ({ethers}) => {
 				>
 					Set the number to 10
 				</button>
+				<button
+					onClick={() => {
+						ethers.signMessage('HelloWorld', 'hw');
+					}}
+				>
+					Sign 'Hello World' message
+				</button>
 			</>
 		</Site>
 	);

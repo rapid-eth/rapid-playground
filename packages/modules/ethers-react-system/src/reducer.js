@@ -4,7 +4,7 @@ import {
   SET_PROVIDER,
   SET_PROVIDER_STATUS,
   SIGN_TYPED_MESSAGE_REQUEST,
-  SIGN_MESSAGE_REQUEST,
+  SIGN_MESSAGE,
   INIT_CONTRACT_REQUEST,
   DEPLOY_CONTRACT_REQUEST,
   DEPLOY_CONTRACT_FROM_BYTECODE_REQUEST,
@@ -60,17 +60,11 @@ const reducerActions = (state, action) => {
           ]
         }
       };
-    case SIGN_MESSAGE_REQUEST:
+    case SIGN_MESSAGE:
       return {
         ...state,
-        store: {
-          ...state.store,
-          messages: [
-            ...state.store.messages,
-            {
-              ...action
-            }
-          ]
+        messages: {
+          [id]: payload
         }
       };
     case 'SIGN_MESSAGE_SUCCESS':

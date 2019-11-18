@@ -43,7 +43,6 @@ const Context = createContext({
   store: {
     contracts: [],
     deploy: [],
-    messages: [],
     library: [],
     transactions: [],
     wallets: []
@@ -51,6 +50,7 @@ const Context = createContext({
   contracts: {},
   library: {},
   deployed: [],
+  messages: {},
   signatures: {},
   address: undefined,
   wallet: undefined,

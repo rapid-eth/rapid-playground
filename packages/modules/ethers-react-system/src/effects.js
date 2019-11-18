@@ -57,7 +57,7 @@ const effects = (callUseEffect, state, dispatch) => {
    * @function SetWallet
    */
   callUseEffect(() => {
-    if (state.address && !state.wallet) {
+    if (state.address && state.wallet === undefined) {
       const runEffect = async () => {
         try {
           const provider = networkRouting('metamask');
