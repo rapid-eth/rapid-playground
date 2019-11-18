@@ -105,6 +105,10 @@ export const getLatestDeploymentAddress = Contract => {
     return '';
   }
   const networks = Object.keys(Contract.networks);
+  if (networks.length <= 0) {
+    return '';
+  }
+
   const latestAddress =
     Contract.networks[networks[networks.length - 1]].address;
   return latestAddress;
@@ -139,24 +143,26 @@ export const networkRouting = network => {
  *
  * @param {JSON} contract
  * @param {String} providerName
+ * @param {Object} optionalParams
  */
-export const getContract = (contract, providerName) => {
-  const provider = networkRouting(providerName) || networkRouting('metamask');
+export const getContract = (contract, providerName, optionalParams = {}) => {
+  const { givenAddress } = optionalParams;
+  const provider = networkRouting(providerName);
   const { abi, bytecode, contractName } = contract;
-  const address = getLatestDeploymentAddress(contract);
+  const address = givenAddress || getLatestDeploymentAddress(contract);
 
   //if the contract does not have any associated deployments
   //then it will be initialized as a factory
-  const contractID =
-    address.length > 0 ? contractName : `${contractName}Factory`;
+
   if (address.length > 0) {
-    console.log('HI');
+    const contractID = contractName;
     const deployedContract = new ethers.Contract(address, abi, provider);
 
     return [deployedContract, address, contractID];
   } else {
-    const wallet = provider.getSigner();
-    const factory = new ethers.ContractFactory(abi, bytecode, wallet);
+    const contractID = `${contractName}Factory`;
+    // const wallet = provider.getSigner();
+    const factory = new ethers.ContractFactory(abi, bytecode);
     return [factory, address, contractID];
   }
 };

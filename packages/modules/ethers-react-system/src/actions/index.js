@@ -6,9 +6,9 @@ import {
 } from '../utilities';
 import { ethers } from 'ethers';
 import {
-  INIT_CONTRACT_REQUEST,
+  INIT_CONTRACT,
   SET_WALLET,
-  SIGN_TRANSACTION_REQUEST,
+  SIGN_TRANSACTION,
   SIGN_MESSAGE
 } from './types';
 /**
@@ -52,33 +52,33 @@ export const loadContractIntoLibrary = (state, dispatch) => ({
  * @param {Object} Contract The smart contract build object. Assumed to follow the general structure resulting
  * from compiling via the truffle(ie it has the abi, networks used, etc)
  *
- * @param {String} address optional parameter that specifies the deployment address to initialize the contract with.
+ * @param {String} givenAddress optional parameter that specifies the deployment address to initialize the contract with.
  * In the event you need to initialize with a contract that is not the latest deployed.
  *
  * TODO @todo add extensive error checking
  */
-export const initContract = (state, dispatch) => (Contract, address) => {
+export const initContract = (state, dispatch) => (Contract, givenAddress) => {
   const { wallet, defaultProvider } = state;
   if (wallet === undefined || Contract === undefined) {
     return;
   }
 
   try {
-    const [contract, latestAddress, contractID] = getContract(
+    const [contract, address, contractID] = getContract(
       contract,
-      defaultProvider
+      defaultProvider,
+      { givenAddress }
     );
     dispatch({
-      type: INIT_CONTRACT_REQUEST,
+      type: INIT_CONTRACT,
       id: contractID,
       payload: {
         contract,
-        address: address || latestAddress
+        address
       }
     });
   } catch (error) {
-    console.log(error);
-    return;
+    throw new Error('Error occured while initialization contract: ', error);
   }
 };
 
@@ -150,9 +150,8 @@ export const sendTransaction = (state, dispatch) => (
   const contract = state.contracts[contractID];
   const contractFunction = contract[functionName];
   contractFunction(...params).then(tx => {
-    console.log(tx);
     return dispatch({
-      type: SIGN_TRANSACTION_REQUEST,
+      type: SIGN_TRANSACTION,
       id: contractID,
       payload: tx.toNumber()
     });
@@ -163,18 +162,16 @@ export const sendTransaction = (state, dispatch) => (
  * @summary
  */
 export const generateWallet = (state, dispatch) => () => {
+  const { contracts, provider } = state;
   if (state.wallet) {
     return;
   }
   const randomWallet = ethers.Wallet.createRandom();
-  const provider =
-    networkRouting(state.provider) ||
-    networkRouting('metamask') ||
-    networkRouting('json');
+  // const provider = networkRouting(provider) || networkRouting('json');
   const wallet = new ethers.Wallet(randomWallet.privateKey, provider);
-  const contracts = generateNewContracts(state.contracts, wallet);
+  const newContracts = generateNewContracts(contracts, wallet);
   dispatch({
     type: SET_WALLET,
-    payload: { wallet, address: wallet.address, contracts }
+    payload: { wallet, address: wallet.address, contracts: newContracts }
   });
 };

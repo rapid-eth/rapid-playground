@@ -15,7 +15,7 @@ import { initialize } from './middleware/initialize';
  * @todo Add better error handling
  * @todo Add option to initialize a contract not deployed
  */
-const Provider = ({ children, contracts, provider }) => {
+const Provider = ({ children, contracts, provider = 'metamask' }) => {
   const initialState = useContext(Context);
   const [state, dispatch] = useReducer(
     reducers,

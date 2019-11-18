@@ -5,12 +5,12 @@ import {
   SET_PROVIDER_STATUS,
   SIGN_TYPED_MESSAGE_REQUEST,
   SIGN_MESSAGE,
-  INIT_CONTRACT_REQUEST,
+  INIT_CONTRACT,
   DEPLOY_CONTRACT_REQUEST,
   DEPLOY_CONTRACT_FROM_BYTECODE_REQUEST,
   LOAD_CONTRACT_INTO_LIBRARY_REQUEST,
   SET_WALLET,
-  SIGN_TRANSACTION_REQUEST
+  SIGN_TRANSACTION
 } from './actions/types';
 
 const reducerActions = (state, action) => {
@@ -39,7 +39,7 @@ const reducerActions = (state, action) => {
         wallet: payload.wallet,
         contracts: payload.contracts
       };
-    case SIGN_TRANSACTION_REQUEST:
+    case SIGN_TRANSACTION:
       return {
         ...state,
         signatures: {
@@ -107,7 +107,7 @@ const reducerActions = (state, action) => {
     /* Contract Initialize     */
     /* ----------------------- */
 
-    case INIT_CONTRACT_REQUEST:
+    case INIT_CONTRACT:
       const { address, contract } = payload;
       return {
         ...state,
