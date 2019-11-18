@@ -1,8 +1,8 @@
 import {
   hashCode,
-  getLatestDeploymentAddress,
   generateNewContracts,
-  networkRouting
+  networkRouting,
+  getContract
 } from '../utilities';
 import { ethers } from 'ethers';
 import {
@@ -58,17 +58,19 @@ export const loadContractIntoLibrary = (state, dispatch) => ({
  * TODO @todo add extensive error checking
  */
 export const initContract = (state, dispatch) => (Contract, address) => {
-  const { wallet } = state;
+  const { wallet, defaultProvider } = state;
   if (wallet === undefined || Contract === undefined) {
     return;
   }
 
   try {
-    const latestAddress = getLatestDeploymentAddress(Contract);
-    const contract = new ethers.Contract(latestAddress, Contract.abi, wallet);
+    const [contract, latestAddress, contractID] = getContract(
+      contract,
+      defaultProvider
+    );
     dispatch({
       type: INIT_CONTRACT_REQUEST,
-      id: hashCode(Contract),
+      id: contractID,
       payload: {
         contract,
         address: address || latestAddress

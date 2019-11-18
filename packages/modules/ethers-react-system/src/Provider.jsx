@@ -29,6 +29,7 @@ const Provider = ({ children, contracts, provider }) => {
       value={{
         ...state,
         dispatch,
+        defaultProvider: provider,
         enable: window.ethereum ? window.ethereum.enable : state.enable,
         ...actions
       }}

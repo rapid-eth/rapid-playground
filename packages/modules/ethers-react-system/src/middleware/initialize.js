@@ -13,12 +13,10 @@ export const initialize = (contracts, provider) => initialState => {
   }
   let deployed = {};
   contracts.forEach(contract => {
-    const [deployedContract, address] = getContract(contract, provider);
-    const id = hashCode(deployedContract);
-    deployed[contract.contractName] = {
-      id,
+    const [Contract, address, contractID] = getContract(contract, provider);
+    deployed[contractID] = {
       address,
-      ...deployedContract
+      ...Contract
     };
   });
   return {

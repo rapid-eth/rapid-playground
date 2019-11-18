@@ -101,6 +101,9 @@ const createStringMessageSignature = msg => {
  * @returns {String} returns the ethereum address that is associated with the latest deployment of the smart contract
  */
 export const getLatestDeploymentAddress = Contract => {
+  if (Contract.networks === undefined || Contract.networks === null) {
+    return '';
+  }
   const networks = Object.keys(Contract.networks);
   const latestAddress =
     Contract.networks[networks[networks.length - 1]].address;
@@ -138,13 +141,24 @@ export const networkRouting = network => {
  * @param {String} providerName
  */
 export const getContract = (contract, providerName) => {
-  const provider =
-    networkRouting(providerName) ||
-    networkRouting('metamask') ||
-    networkRouting('json');
+  const provider = networkRouting(providerName) || networkRouting('metamask');
+  const { abi, bytecode, contractName } = contract;
   const address = getLatestDeploymentAddress(contract);
-  const deployedContract = new ethers.Contract(address, contract.abi, provider);
-  return [deployedContract, address];
+
+  //if the contract does not have any associated deployments
+  //then it will be initialized as a factory
+  const contractID =
+    address.length > 0 ? contractName : `${contractName}Factory`;
+  if (address.length > 0) {
+    console.log('HI');
+    const deployedContract = new ethers.Contract(address, abi, provider);
+
+    return [deployedContract, address, contractID];
+  } else {
+    const wallet = provider.getSigner();
+    const factory = new ethers.ContractFactory(abi, bytecode, wallet);
+    return [factory, address, contractID];
+  }
 };
 
 /**
