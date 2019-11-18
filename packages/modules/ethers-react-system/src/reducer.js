@@ -67,38 +67,6 @@ const reducerActions = (state, action) => {
           [id]: payload
         }
       };
-    case 'SIGN_MESSAGE_SUCCESS':
-      filtered = state.store.messages.filter(msg => msg.id !== action.id);
-      return {
-        ...state,
-        store: {
-          ...state.store,
-          messages: filtered
-        },
-        signatures: {
-          ...state.signatures,
-          [action.id]: {
-            ...action
-          }
-        }
-      };
-    case 'SIGN_MESSAGE_FAILURE':
-      filtered = state.store.messages.filter(msg => msg.id !== action.id);
-      return {
-        ...state,
-        store: {
-          ...state.store,
-          messages: []
-        },
-        signatures: {
-          ...state.signatures,
-          [input.id]: {
-            ...input,
-            type: 'signature',
-            status: false
-          }
-        }
-      };
 
     /* ----------------------- */
     /* Contract Loading     */
