@@ -1,4 +1,4 @@
-import { hashCode, getContract } from '../utilities';
+import { getContract } from '../utilities';
 
 /**
  * @summary The function is called by the 'useReducer' functionality, it will process the given smart contracts

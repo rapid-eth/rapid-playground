@@ -55,7 +55,10 @@ export const loadContractIntoLibrary = (state, dispatch) => ({
  * TODO @todo add extensive error checking
  * TODO @todo switch optional params to object method
  */
-export const initContract = (state, dispatch) => (Contract, givenAddress) => {
+export const initContract = (state, dispatch) => (
+  Contract,
+  { address: givenAddress, contractID: givenID }
+) => {
   const { wallet, defaultProvider } = state;
   if (wallet === undefined || Contract === undefined) {
     throw new Error(
@@ -67,7 +70,7 @@ export const initContract = (state, dispatch) => (Contract, givenAddress) => {
     const [contract, address, contractID] = getContract(
       Contract,
       defaultProvider,
-      { givenAddress }
+      { givenAddress, givenID }
     );
     dispatch({
       type: INIT_CONTRACT,
@@ -89,7 +92,7 @@ export const initContract = (state, dispatch) => (Contract, givenAddress) => {
  */
 export const deployContract = (state, dispatch) => async (
   contractID,
-  params
+  params = []
 ) => {
   const { contracts, wallet } = state;
   if (wallet === undefined) {
@@ -113,7 +116,7 @@ export const deployContract = (state, dispatch) => async (
 
   try {
     const factory = contracts[contractID];
-    const deployedContract = await factory.deploy();
+    const deployedContract = await factory.deploy(...params);
     await deployedContract.deployed();
     const deployedID = contractID.split('-')[0];
     dispatch({

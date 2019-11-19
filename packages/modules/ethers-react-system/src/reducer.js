@@ -149,23 +149,6 @@ const reducerActions = (state, action) => {
           ]
         }
       };
-    case 'DEPLOY_CONTRACT_SUCCESS':
-      filtered = state.store.messages.filter(msg => msg.id !== input.id);
-      return {
-        ...state,
-        store: {
-          ...state.store,
-          deploy: filtered
-        },
-        deployed: [
-          ...state.deployed,
-          {
-            ...payload,
-            type: 'contractDeployed',
-            status: true
-          }
-        ]
-      };
 
     default:
       throw new Error(`No Reducer Type Set: ${action.type}`);
