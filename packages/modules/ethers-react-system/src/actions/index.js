@@ -4,7 +4,8 @@ import {
   INIT_CONTRACT,
   SET_WALLET,
   SIGN_TRANSACTION,
-  SIGN_MESSAGE
+  SIGN_MESSAGE,
+  DEPLOY_CONTRACT
 } from './types';
 /**
  *
@@ -57,12 +58,14 @@ export const loadContractIntoLibrary = (state, dispatch) => ({
 export const initContract = (state, dispatch) => (Contract, givenAddress) => {
   const { wallet, defaultProvider } = state;
   if (wallet === undefined || Contract === undefined) {
-    return;
+    throw new Error(
+      `Either contract to be initialized was not passed or no wallet is connected`
+    );
   }
 
   try {
     const [contract, address, contractID] = getContract(
-      contract,
+      Contract,
       defaultProvider,
       { givenAddress }
     );
@@ -89,7 +92,6 @@ export const deployContract = (state, dispatch) => async (
   params
 ) => {
   const { contracts, wallet } = state;
-
   if (wallet === undefined) {
     throw new Error(
       "Contract cannot be deployed when there's no connected wallet"
@@ -101,7 +103,7 @@ export const deployContract = (state, dispatch) => async (
     );
   }
 
-  if (contractID.contains('Factory') === false) {
+  if (contractID.includes('Factory') === false) {
     throw new Error('You can only deploy from contract factories');
   }
 
@@ -109,18 +111,23 @@ export const deployContract = (state, dispatch) => async (
     throw new Error('No such contract factory found with id: ', contractID);
   }
 
-  const factory = contracts[contractID];
-  const deployedContract = await factory.deploy(...params);
-  await deployedContract.deployed();
-
-  dispatch({
-    type: 'DEPLOY_CONTRACT_REQUEST',
-    id: contractID,
-    payload: {
-      contract: deployedContract,
-      ...params
-    }
-  });
+  try {
+    const factory = contracts[contractID];
+    const deployedContract = await factory.deploy();
+    await deployedContract.deployed();
+    const deployedID = contractID.split('-')[0];
+    dispatch({
+      type: DEPLOY_CONTRACT,
+      id: deployedID,
+      payload: {
+        contract: deployedContract
+      }
+    });
+  } catch (error) {
+    throw new Error(
+      `An error occured while deploying the contract ${contractID}: ${error}`
+    );
+  }
 };
 
 /**

@@ -13,7 +13,7 @@ import { initialize } from './middleware/initialize';
  * @todo Add hooks to query smart contracts
  * @todo Add dispatch async/await
  * @todo Add better error handling
- * @todo Add option to initialize a contract not deployed
+ * @todo Find better way to automatically set the address and wallet
  */
 const Provider = ({ children, contracts, provider = 'metamask' }) => {
   const initialState = useContext(Context);

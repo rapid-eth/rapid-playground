@@ -6,7 +6,7 @@ import {
   SIGN_TYPED_MESSAGE_REQUEST,
   SIGN_MESSAGE,
   INIT_CONTRACT,
-  DEPLOY_CONTRACT_REQUEST,
+  DEPLOY_CONTRACT,
   DEPLOY_CONTRACT_FROM_BYTECODE_REQUEST,
   LOAD_CONTRACT_INTO_LIBRARY_REQUEST,
   SET_WALLET,
@@ -89,7 +89,6 @@ const reducerActions = (state, action) => {
     /* Contract Loading     */
     /* ----------------------- */
     case 'LOAD_CONTRACT_REQUEST':
-      console.log(action, 'init contract');
       return dot(state)
         .set(`store.library`, [...state.store.contracts, action])
         .value();
@@ -128,20 +127,12 @@ const reducerActions = (state, action) => {
     /* ----------------------- */
     /* Contract Deployment     */
     /* ----------------------- */
-    case DEPLOY_CONTRACT_REQUEST:
+    case DEPLOY_CONTRACT:
       return {
         ...state,
-        store: {
-          ...state.store,
-          deploy: [
-            ...state.store.deploy,
-            {
-              payload,
-              type,
-              id: delta || hashCode(payload),
-              delta: delta || hashCode(payload)
-            }
-          ]
+        contracts: {
+          ...state.contracts,
+          [id]: payload.contract
         }
       };
     case DEPLOY_CONTRACT_FROM_BYTECODE_REQUEST:

@@ -160,7 +160,7 @@ export const getContract = (contract, providerName, optionalParams = {}) => {
 
     return [deployedContract, address, contractID];
   } else {
-    const contractID = `${contractName}Factory`;
+    const contractID = `${contractName}-Factory`;
     const wallet = provider.getSigner();
     const factory = new ethers.ContractFactory(abi, bytecode, wallet);
     return [factory, address, contractID];
@@ -185,17 +185,12 @@ export const generateNewContracts = (oldContracts, wallet) => {
 
     if (id.includes('Factory')) {
       const factory = new ethers.ContractFactory(abi, bytecode, wallet);
-      newContracts[id] = {
-        id,
-        address,
-        ...factory
-      };
+      newContracts[id] = factory;
     } else {
       const contract = new ethers.Contract(address, abi, wallet);
       newContracts[id] = {
-        id,
         address,
-        ...contract
+        contract
       };
     }
   });

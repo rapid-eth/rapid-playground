@@ -45,7 +45,9 @@ const TitleNumber = ({ethers}) => {
 					Sign 'Hello World' message
 				</button>
 
-				<button onClick={() => ethers.deployContract('StorageFactory')}>
+				<button
+					onClick={() => ethers.deployContract('Storage-Factory')}
+				>
 					Deploy Storage Contract
 				</button>
 			</>
